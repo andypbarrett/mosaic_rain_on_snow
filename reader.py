@@ -21,6 +21,8 @@ metfiles = [
 ]
 metfile_path = [DATAPATH / f for f in metfiles]
 
+SNOWDATA_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data/Snow_RoS.csv"
+
 
 def metdata():
     """Loads meteorological tower data"""
@@ -30,4 +32,4 @@ def metdata():
 
 def snowdata():
     """Returns pandas dataframe containing snowpit observations"""
-    return
+    return pd.read_csv(SNOWDATA_PATH, parse_dates=True, index_col="Timestamp")
