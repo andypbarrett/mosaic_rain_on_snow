@@ -29,4 +29,5 @@ def metdata():
 
 
 def snowdata():
+    """Returns pandas dataframe containing snowpit observations"""
     return
