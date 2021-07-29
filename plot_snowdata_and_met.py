@@ -30,13 +30,13 @@ def define_markers():
     return paths
 
 
-def mscatter(df, column, ax=None, color='k', size=1):
+def mscatter(df, column, ax=None, color='k', size=1, label=None):
     if not ax: ax=plt.gca()
     xs = df.index.values
     ys = df[column]
     for x, y, m in zip(xs, ys, site_markers):
         if np.isfinite(y):
-            ax.scatter(x, y, size, marker=m, c=color, zorder=10)
+            ax.scatter(x, y, size, marker=m, c=color, zorder=10, label=label)
     return ax
 
 
