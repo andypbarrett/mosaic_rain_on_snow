@@ -30,8 +30,10 @@ density_colors = [
     "y",
     ]
 
-
-DEFAULT_MARKER_COLOR = 'c'
+DEFAULT_MARKER_SIZE = 50
+DEFAULT_MARKER_COLOR = "c"
+DEFAULT_DATA_LINE_COLOR = "black"
+DEFAULT_ZERO_LINE_COLOR = "0.3"
 
 
 def site_legend_handles(color=DEFAULT_MARKER_COLOR, markersize=8):
@@ -68,7 +70,7 @@ def density_legend_handles(markersize=8):
 
 def mscatter(df, column, ax=None, color='k', size=1, label=None):
     """Creates a scatter plot using different markers for each point"""
-    if not ax: ax=plt.gca()
+    if not ax: ax = plt.gca()
     xs = df.index.values
     ys = df[column]
     for x, y, m in zip(xs, ys, site_markers):
@@ -87,6 +89,7 @@ def plot_panel(ax):
     xbeg = dt.datetime(2020, 9, 9, 0)
     xend = dt.datetime(2020, 9, 16, 0)
 
+    if not ax: ax = plt.gca()
     ax.set_xlim(xbeg, xend)
     ax.xaxis.set_major_formatter(datefmt)
 
