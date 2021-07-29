@@ -95,6 +95,91 @@ def plot_panel(ax):
     return ax
 
 
+def plot_meteorological_data(metdata, ax=None):
+    """Creates panel with meteorological data
+    :metdata: xarray.DataFrame containing meteorological tower data
+
+    :ax: matplotlib.Axes instance
+    """
+    tair_min_limit = -20.
+    tair_max_limit = 3.
+    ax = plot_panel(ax)
+    metdata.temp_2m.plot(ax=ax, color=DEFAULT_DATA_LINE_COLOR, lw=2)
+    ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
+    ax.set_ylim(tair_min_limit, tair_max_limit)
+    ax.set_xlabel('')
+    ax.set_ylabel('Tair $^{\circ}C$')
+    return ax
+
+
+def plot_snow_temperature(metdata, snowdata, ax=None):
+    """Creates panel with snow temperature data
+    :metdata: xarray.DataSet with meteorological data
+    :snowdata: pandas.DataFrame with snow data
+
+    :ax: matplotlib.Axes instance
+    """
+    ax = plot_panel(ax)
+    ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
+    ax.set_ylim(-20, 3)
+    metdata.brightness_temp_surface.plot(
+        ax=ax,
+        color=DEFAULT_DATA_LINE_COLOR,
+        label='Snow surface temperature'
+    )
+    ax = mscatter(snowdata,
+                  'Bulk Temp (C)',
+                  ax=ax,
+                  color=DEFAULT_MARKER_COLOR,
+                  size=DEFAULT_MARKER_SIZE
+                  )
+    ax.set_xlabel('')
+    ax.set_ylabel('Tsnow ($^{\circ}C$)')
+
+    # Make snow temperature legend
+    handles, labels = ax.get_legend_handles_labels()
+    marker_handle = mlines.Line2D([], [],
+                                  color=DEFAULT_MARKER_COLOR,
+                                  marker="o",
+                                  linestyle='None',
+                                  markersize=8)
+    handles.append(marker_handle)
+    labels.append("Bulk snow temperature")
+    ax.legend(handles, labels, loc="lower right")
+    return ax
+
+
+def plot_snow_density(snowdata, ax=None):
+    """Create plot of snow density parameters.  Plots bulk density,
+       desnity from micro-CT and SSA from micro-CT
+    :snowdata: pandas.DataFrame containing snow data
+    
+    :ax: matplotlib.Axes
+    """
+    if not ax: ax = plt.gca()
+    ax = plot_panel(ax)
+    ax = mscatter(snowdata, 'Bulk snow density',
+                  ax=ax, color=density_colors[0],
+                  size=DEFAULT_MARKER_SIZE)
+    ax = mscatter(snowdata, 'density',
+                  ax=ax, color=density_colors[1],
+                  size=DEFAULT_MARKER_SIZE)
+    ax.set_ylim(120., 370)
+    ax.set_ylabel('Density ($kg m^{-3}$)')
+
+    # Add sencond y-axis for SSA
+    ax_ssa = ax.twinx()
+    ax_ssa = mscatter(snowdata, 'SSA',
+                      ax=ax_ssa,
+                      color=density_colors[2],
+                      size=DEFAULT_MARKER_SIZE)
+    ax_ssa.set_ylim(0., 25.)
+    ax_ssa.set_ylabel('Specific Surface Area ($m^2 kg^{-1}$)')
+
+    ax.legend(handles=density_legend_handles())
+    return ax
+
+
 def plot_snowdata_and_met():
     """Plots air temperature and snowpack parameters for MOSAiC ROS event"""
     metdata = reader.metdata()
@@ -102,45 +187,9 @@ def plot_snowdata_and_met():
 
     fig, ax = plt.subplots(5, 1, figsize=(7,9), sharex=True)
 
-    # Met data
-    ax[0] = plot_panel(ax[0])
-    metdata.temp_2m.plot(ax=ax[0], color='k', lw=2)
-    ax[0].axhline(0., c='0.3')
-    ax[0].set_ylim(-20, 3)
-    ax[0].set_xlabel('')
-    ax[0].set_ylabel('Tair $^{\circ}C$')
-
-    # Snow surface temperature
-    ax[1] = plot_panel(ax[1])
-    ax[1].axhline(0., c='0.3')
-    ax[1].set_ylim(-20, 3)
-    metdata.brightness_temp_surface.plot(ax=ax[1], color='k',
-                                         label='Snow surface temperature')
-    ax[1] = mscatter(snowdata, 'Bulk Temp (C)', ax=ax[1], color=DEFAULT_MARKER_COLOR,
-                     size=50)
-    ax[1].set_xlabel('')
-    ax[1].set_ylabel('Tsnow ($^{\circ}C$)')
-    # Make snow temperature legend
-    handles, labels = ax[1].get_legend_handles_labels()
-    marker_handle = mlines.Line2D([], [], color='blue', marker="o",
-                                  linestyle='None', markersize=8)
-    handles.append(marker_handle)
-    labels.append("Bulk snow temperature")
-    ax[1].legend(handles, labels, loc="lower right")
-
-    # Snow density and SSA
-    ax[2] = plot_panel(ax[2])
-    ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color=density_colors[0],
-                     size=50)
-    ax[2] = mscatter(snowdata, 'density', ax=ax[2], color=density_colors[1],
-                     size=50)
-    ax_ssa = ax[2].twinx()
-    ax_ssa = mscatter(snowdata, 'SSA', ax=ax_ssa, color=density_colors[2], size=50)
-    ax_ssa.set_ylim(0., 25.)
-    ax_ssa.set_ylabel('Specific Surface Area ($m^2 kg^{-1}$)')
-    ax[2].set_ylim(120., 370)
-    ax[2].set_ylabel('Density ($kg m^{-3}$)')
-    ax[2].legend(handles=density_legend_handles())
+    ax[0] = plot_meteorological_data(metdata, ax=ax[0])
+    ax[1] = plot_snow_temperature(metdata, snowdata, ax=ax[1])
+    ax[2] = plot_snow_density(snowdata, ax=ax[2])
     
     # Snow salinity
     ax[3] = plot_panel(ax[3])
