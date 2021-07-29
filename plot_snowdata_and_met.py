@@ -86,8 +86,11 @@ def plot_snowdata_and_met():
     ax[2] = plot_panel(ax[2])
     ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color='black', size=50)
     ax[2] = mscatter(snowdata, 'density', ax=ax[2], color='purple', size=50)
-#    ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color='black', size=50)
-    ax[2].set_ylim(140., 370)
+    ax_ssa = ax[2].twinx()
+    ax_ssa = mscatter(snowdata, 'SSA', ax=ax_ssa, color='pink', size=50)
+    ax_ssa.set_ylim(0., 25.)
+    ax_ssa.set_ylabel('Specific Surface Area ($m^2 kg^{-1}$)')
+    ax[2].set_ylim(120., 370)
     ax[2].set_ylabel('Density ($kg m^{-3}$)')
 
     # Snow salinity
