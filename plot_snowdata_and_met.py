@@ -3,11 +3,42 @@ import datetime as dt
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.markers as mmarkers
+
+import numpy as np
 
 import reader
 
 
-site_markers = []
+site_name = ["SNOW5_ROV",
+             "SNOW5_ALBK",
+             "SNOW5_CORING",
+             "SNOW5_TRANS_KuKa_PIT",
+             "SNOW5_FLUX",
+             "SNOW5_RS"]
+
+site_markers = ["o", "v", "P", "X", "D", "s"]
+
+
+def define_markers():
+    """Returns list of marker paths for plotting with mscatter"""
+    paths = []
+    for m in site_markers:
+        mobj = mmarkers.MarkerStyle(m)
+        path = mobj.get_path().transformed(mobj.get_transform())
+        paths.append(path)
+    return paths
+
+
+def mscatter(df, column, ax=None, color='k', size=1):
+    if not ax: ax=plt.gca()
+    xs = df.index.values
+    ys = df[column]
+    for x, y, m in zip(xs, ys, site_markers):
+        if np.isfinite(y):
+            ax.scatter(x, y, size, marker=m, c=color, zorder=10)
+    return ax
+
 
 def plot_panel(ax):
     """Adds a plot panel"""
@@ -22,7 +53,7 @@ def plot_panel(ax):
     ax.set_xlim(xbeg, xend)
     ax.xaxis.set_major_formatter(datefmt)
 
-    ax.axvspan(ros_beg, ros_end, color='0.8')
+    ax.axvspan(ros_beg, ros_end, color='0.8', zorder=0)
 
     return ax
 
@@ -39,23 +70,38 @@ def plot_snowdata_and_met():
     metdata.temp_2m.plot(ax=ax[0], color='k', lw=2)
     ax[0].axhline(0., c='0.3')
     ax[0].set_ylim(-20, 3)
-
+    ax[0].set_xlabel('')
+    ax[0].set_ylabel('Tair $^{\circ}C$')
+    
     # Snow surface temperature
     ax[1] = plot_panel(ax[1])
     ax[1].axhline(0., c='0.3')
     ax[1].set_ylim(-20, 3)
     metdata.brightness_temp_surface.plot(ax=ax[1], color='k')
-    snowdata['Bulk Temp (C)'].plot(ax=ax[1], marker='o', linestyle='')
+    ax[1] = mscatter(snowdata, 'Bulk Temp (C)', ax=ax[1], color='blue', size=50)
+    ax[1].set_xlabel('')
+    ax[1].set_ylabel('$^{\circ}C$')
     
     # Snow density and SSA
     ax[2] = plot_panel(ax[2])
+    ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color='black', size=50)
+    ax[2] = mscatter(snowdata, 'density', ax=ax[2], color='purple', size=50)
+#    ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color='black', size=50)
+    ax[2].set_ylim(140., 370)
+    ax[2].set_ylabel('Density ($kg m^{-3}$)')
 
     # Snow salinity
     ax[3] = plot_panel(ax[3])
-
+    ax[3] = mscatter(snowdata, 'SWE (mm)', ax=ax[3], color='black', size=50)
+    ax[3].set_ylim(0., 35)
+    ax[3].set_ylabel('SWE (mm)')
+ 
     # Snow water equivalent
     ax[4] = plot_panel(ax[4])
-
+    ax[4] = mscatter(snowdata, 'Salinity [ppt]', ax=ax[4], color='black', size=50)
+    ax[4].set_ylim(0., 0.6)
+    ax[4].set_ylabel('Salinity (ppt)')
+    
     plt.tight_layout()
     plt.show()
 
