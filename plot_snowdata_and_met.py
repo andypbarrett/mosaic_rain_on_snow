@@ -17,8 +17,18 @@ site_name = ["ROV",
              "KuKa PIT",
              "FLUX",
              "RS"]
-
 site_markers = ["o", "v", "P", "X", "D", "s"]
+
+density_labels = [
+    "Density cutter",
+    "micro-CT",
+    "SSA"
+    ]
+density_colors = [
+    "c",
+    "m",
+    "y",
+    ]
 
 
 def site_legend_handles(color='black', markersize=8):
@@ -32,6 +42,23 @@ def site_legend_handles(color='black', markersize=8):
                           linestyle='None',
                           markersize=markersize,
                           label=label,)
+            )
+    return handles
+
+
+def density_legend_handles(markersize=8):
+    """Generates legend for density plot"""
+    handles = []
+    for label, color in zip(density_labels, density_colors):
+        handles.append(
+            mlines.Line2D(
+                [], [],
+                color=color,
+                marker='o',
+                linestyle='None',
+                markersize=markersize,
+                label=label,
+                )
             )
     return handles
 
@@ -109,17 +136,18 @@ def plot_snowdata_and_met():
 
     # Snow density and SSA
     ax[2] = plot_panel(ax[2])
-    ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color='black',
+    ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color=density_colors[0],
                      size=50)
-    ax[2] = mscatter(snowdata, 'density', ax=ax[2], color='purple',
+    ax[2] = mscatter(snowdata, 'density', ax=ax[2], color=density_colors[1],
                      size=50)
     ax_ssa = ax[2].twinx()
-    ax_ssa = mscatter(snowdata, 'SSA', ax=ax_ssa, color='pink', size=50)
+    ax_ssa = mscatter(snowdata, 'SSA', ax=ax_ssa, color=density_colors[2], size=50)
     ax_ssa.set_ylim(0., 25.)
     ax_ssa.set_ylabel('Specific Surface Area ($m^2 kg^{-1}$)')
     ax[2].set_ylim(120., 370)
     ax[2].set_ylabel('Density ($kg m^{-3}$)')
-
+    ax[2].legend(handles=density_legend_handles())
+    
     # Snow salinity
     ax[3] = plot_panel(ax[3])
     ax[3] = mscatter(snowdata, 'SWE (mm)', ax=ax[3], color='black', size=50)
