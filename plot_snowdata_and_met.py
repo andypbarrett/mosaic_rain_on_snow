@@ -11,14 +11,29 @@ import numpy as np
 import reader
 
 
-site_name = ["SNOW5_ROV",
-             "SNOW5_ALBK",
-             "SNOW5_CORING",
-             "SNOW5_TRANS_KuKa_PIT",
-             "SNOW5_FLUX",
-             "SNOW5_RS"]
+site_name = ["ROV",
+             "ALBK",
+             "CORING",
+             "KuKa PIT",
+             "FLUX",
+             "RS"]
 
 site_markers = ["o", "v", "P", "X", "D", "s"]
+
+
+def site_legend_handles(color='black', markersize=8):
+    """Generates legend for site markers"""
+    handles = []
+    for marker, label in zip(site_markers, site_name):
+        handles.append(
+            mlines.Line2D([], [],
+                          color=color,
+                          marker=marker,
+                          linestyle='None',
+                          markersize=markersize,
+                          label=label,)
+            )
+    return handles
 
 
 def define_markers():
@@ -110,13 +125,15 @@ def plot_snowdata_and_met():
     ax[3] = mscatter(snowdata, 'SWE (mm)', ax=ax[3], color='black', size=50)
     ax[3].set_ylim(0., 35)
     ax[3].set_ylabel('SWE (mm)')
- 
+
     # Snow water equivalent
     ax[4] = plot_panel(ax[4])
-    ax[4] = mscatter(snowdata, 'Salinity [ppt]', ax=ax[4], color='black', size=50)
+    ax[4] = mscatter(snowdata, 'Salinity [ppt]', ax=ax[4], color='black',
+                     size=50)
     ax[4].set_ylim(-0.05, 0.6)
     ax[4].set_ylabel('Salinity (ppt)')
-    
+    ax[4].legend(handles=site_legend_handles(), loc="upper left")
+
     plt.tight_layout()
     plt.show()
 
