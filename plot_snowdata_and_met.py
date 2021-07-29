@@ -7,6 +7,8 @@ import matplotlib.dates as mdates
 import reader
 
 
+site_markers = []
+
 def plot_panel(ax):
     """Adds a plot panel"""
     datefmt = mdates.DateFormatter("%d")
@@ -34,15 +36,16 @@ def plot_snowdata_and_met():
 
     # Met data
     ax[0] = plot_panel(ax[0])
-    metdata.temp_2m.plot(ax=ax[0], color='k', lw=3)
+    metdata.temp_2m.plot(ax=ax[0], color='k', lw=2)
     ax[0].axhline(0., c='0.3')
     ax[0].set_ylim(-20, 3)
 
     # Snow surface temperature
     ax[1] = plot_panel(ax[1])
-    metdata.brightness_temp_surface.plot(ax=ax[1], color='k', lw=2)
     ax[1].axhline(0., c='0.3')
     ax[1].set_ylim(-20, 3)
+    metdata.brightness_temp_surface.plot(ax=ax[1], color='k')
+    snowdata['Bulk Temp (C)'].plot(ax=ax[1], marker='o', linestyle='')
     
     # Snow density and SSA
     ax[2] = plot_panel(ax[2])
@@ -55,9 +58,7 @@ def plot_snowdata_and_met():
 
     plt.tight_layout()
     plt.show()
-    return
 
 
 if __name__ == "__main__":
     plot_snowdata_and_met()
-    
