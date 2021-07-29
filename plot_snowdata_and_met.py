@@ -90,7 +90,7 @@ def plot_snowdata_and_met():
                                   linestyle='None', markersize=8)
     handles.append(marker_handle)
     labels.append("Bulk snow temperature")
-    ax[1].legend(handles, labels)
+    ax[1].legend(handles, labels, loc="lower right")
 
     # Snow density and SSA
     ax[2] = plot_panel(ax[2])
