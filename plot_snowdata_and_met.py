@@ -31,7 +31,10 @@ density_colors = [
     ]
 
 
-def site_legend_handles(color='black', markersize=8):
+DEFAULT_MARKER_COLOR = 'c'
+
+
+def site_legend_handles(color=DEFAULT_MARKER_COLOR, markersize=8):
     """Generates legend for site markers"""
     handles = []
     for marker, label in zip(site_markers, site_name):
@@ -122,7 +125,7 @@ def plot_snowdata_and_met():
     ax[1].set_ylim(-20, 3)
     metdata.brightness_temp_surface.plot(ax=ax[1], color='k',
                                          label='Snow surface temperature')
-    ax[1] = mscatter(snowdata, 'Bulk Temp (C)', ax=ax[1], color='blue',
+    ax[1] = mscatter(snowdata, 'Bulk Temp (C)', ax=ax[1], color=DEFAULT_MARKER_COLOR,
                      size=50)
     ax[1].set_xlabel('')
     ax[1].set_ylabel('Tsnow ($^{\circ}C$)')
@@ -150,13 +153,13 @@ def plot_snowdata_and_met():
     
     # Snow salinity
     ax[3] = plot_panel(ax[3])
-    ax[3] = mscatter(snowdata, 'SWE (mm)', ax=ax[3], color='black', size=50)
+    ax[3] = mscatter(snowdata, 'SWE (mm)', ax=ax[3], color=DEFAULT_MARKER_COLOR, size=50)
     ax[3].set_ylim(0., 35)
     ax[3].set_ylabel('SWE (mm)')
 
     # Snow water equivalent
     ax[4] = plot_panel(ax[4])
-    ax[4] = mscatter(snowdata, 'Salinity [ppt]', ax=ax[4], color='black',
+    ax[4] = mscatter(snowdata, 'Salinity [ppt]', ax=ax[4], color=DEFAULT_MARKER_COLOR,
                      size=50)
     ax[4].set_ylim(-0.05, 0.6)
     ax[4].set_ylabel('Salinity (ppt)')
