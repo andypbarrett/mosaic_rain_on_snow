@@ -183,6 +183,22 @@ def plot_snow_density(snowdata, ax=None):
     return ax
 
 
+def plot_snow_water_equivalent(snowdata, ax=None):
+    """Creates plots of snow water equivalent
+    :snowdata: pandas.DataFrame containing snow data
+    :ax: matplotlib.Axes
+    """
+    if not ax: plt.gca()
+    ax = plot_panel(ax)
+    ax = mscatter(snowdata, 'SWE (mm)',
+                  ax=ax,
+                  color=DEFAULT_MARKER_COLOR,
+                  size=DEFAULT_MARKER_SIZE)
+    ax.set_ylim(0., 35)
+    ax.set_ylabel('SWE (mm)')
+    return ax
+    
+
 def plot_snowdata_and_met():
     """Plots air temperature and snowpack parameters for MOSAiC ROS event"""
     metdata = reader.metdata()
@@ -193,13 +209,9 @@ def plot_snowdata_and_met():
     ax[0] = plot_meteorological_data(metdata, ax=ax[0])
     ax[1] = plot_snow_temperature(metdata, snowdata, ax=ax[1])
     ax[2] = plot_snow_density(snowdata, ax=ax[2])
+    ax[3] = plot_snow_water_equivalent(snowdata, ax=ax[3])
     
     # Snow salinity
-    ax[3] = plot_panel(ax[3])
-    ax[3] = mscatter(snowdata, 'SWE (mm)', ax=ax[3], color=DEFAULT_MARKER_COLOR, size=50)
-    ax[3].set_ylim(0., 35)
-    ax[3].set_ylabel('SWE (mm)')
-
     # Snow water equivalent
     ax[4] = plot_panel(ax[4])
     ax[4] = mscatter(snowdata, 'Salinity [ppt]', ax=ax[4], color=DEFAULT_MARKER_COLOR,
