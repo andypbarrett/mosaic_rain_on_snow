@@ -4,6 +4,7 @@ import datetime as dt
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.markers as mmarkers
+import matplotlib.lines as mlines
 
 import numpy as np
 
@@ -72,24 +73,31 @@ def plot_snowdata_and_met():
     ax[0].set_ylim(-20, 3)
     ax[0].set_xlabel('')
     ax[0].set_ylabel('Tair $^{\circ}C$')
-    
+
     # Snow surface temperature
     ax[1] = plot_panel(ax[1])
     ax[1].axhline(0., c='0.3')
     ax[1].set_ylim(-20, 3)
     metdata.brightness_temp_surface.plot(ax=ax[1], color='k',
                                          label='Snow surface temperature')
-    ax[1] = mscatter(snowdata, 'Bulk Temp (C)', ax=ax[1], color='blue', size=50)
+    ax[1] = mscatter(snowdata, 'Bulk Temp (C)', ax=ax[1], color='blue',
+                     size=50)
     ax[1].set_xlabel('')
     ax[1].set_ylabel('Tsnow ($^{\circ}C$)')
+    # Make snow temperature legend
     handles, labels = ax[1].get_legend_handles_labels()
-    print(labels)
+    marker_handle = mlines.Line2D([], [], color='blue', marker="o",
+                                  linestyle='None', markersize=8)
+    handles.append(marker_handle)
+    labels.append("Bulk snow temperature")
     ax[1].legend(handles, labels)
-    
+
     # Snow density and SSA
     ax[2] = plot_panel(ax[2])
-    ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color='black', size=50)
-    ax[2] = mscatter(snowdata, 'density', ax=ax[2], color='purple', size=50)
+    ax[2] = mscatter(snowdata, 'Bulk snow density', ax=ax[2], color='black',
+                     size=50)
+    ax[2] = mscatter(snowdata, 'density', ax=ax[2], color='purple',
+                     size=50)
     ax_ssa = ax[2].twinx()
     ax_ssa = mscatter(snowdata, 'SSA', ax=ax_ssa, color='pink', size=50)
     ax_ssa.set_ylim(0., 25.)
