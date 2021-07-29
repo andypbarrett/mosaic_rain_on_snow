@@ -34,12 +34,15 @@ def plot_snowdata_and_met():
 
     # Met data
     ax[0] = plot_panel(ax[0])
-    metdata.temp_2m.plot(ax=ax[0])
-    ax[0].axhline(0.)
+    metdata.temp_2m.plot(ax=ax[0], color='k', lw=3)
+    ax[0].axhline(0., c='0.3')
+    ax[0].set_ylim(-20, 3)
 
     # Snow surface temperature
     ax[1] = plot_panel(ax[1])
-    metdata.brightness_temp_surface.plot(ax=ax[1])
+    metdata.brightness_temp_surface.plot(ax=ax[1], color='k', lw=2)
+    ax[1].axhline(0., c='0.3')
+    ax[1].set_ylim(-20, 3)
     
     # Snow density and SSA
     ax[2] = plot_panel(ax[2])
