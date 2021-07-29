@@ -44,8 +44,8 @@ def plot_panel(ax):
     """Adds a plot panel"""
     datefmt = mdates.DateFormatter("%d")
 
-    ros_beg = dt.datetime(2020, 9, 13, 12)
-    ros_end = dt.datetime(2020, 9, 15, 12)
+    ros_beg = dt.datetime(2020, 9, 13, 10, 0)
+    ros_end = dt.datetime(2020, 9, 14, 9, 40)
 
     xbeg = dt.datetime(2020, 9, 9, 0)
     xend = dt.datetime(2020, 9, 16, 0)
@@ -77,10 +77,12 @@ def plot_snowdata_and_met():
     ax[1] = plot_panel(ax[1])
     ax[1].axhline(0., c='0.3')
     ax[1].set_ylim(-20, 3)
-    metdata.brightness_temp_surface.plot(ax=ax[1], color='k')
+    metdata.brightness_temp_surface.plot(ax=ax[1], color='k',
+                                         label='Snow surface temperature')
     ax[1] = mscatter(snowdata, 'Bulk Temp (C)', ax=ax[1], color='blue', size=50)
     ax[1].set_xlabel('')
-    ax[1].set_ylabel('$^{\circ}C$')
+    ax[1].set_ylabel('Tsnow ($^{\circ}C$)')
+    ax[1].legend()
     
     # Snow density and SSA
     ax[2] = plot_panel(ax[2])
@@ -102,7 +104,7 @@ def plot_snowdata_and_met():
     # Snow water equivalent
     ax[4] = plot_panel(ax[4])
     ax[4] = mscatter(snowdata, 'Salinity [ppt]', ax=ax[4], color='black', size=50)
-    ax[4].set_ylim(0., 0.6)
+    ax[4].set_ylim(-0.05, 0.6)
     ax[4].set_ylabel('Salinity (ppt)')
     
     plt.tight_layout()
