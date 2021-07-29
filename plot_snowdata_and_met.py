@@ -188,7 +188,7 @@ def plot_snow_water_equivalent(snowdata, ax=None):
     :snowdata: pandas.DataFrame containing snow data
     :ax: matplotlib.Axes
     """
-    if not ax: plt.gca()
+    if not ax: ax = plt.gca()
     ax = plot_panel(ax)
     ax = mscatter(snowdata, 'SWE (mm)',
                   ax=ax,
@@ -197,7 +197,24 @@ def plot_snow_water_equivalent(snowdata, ax=None):
     ax.set_ylim(0., 35)
     ax.set_ylabel('SWE (mm)')
     return ax
-    
+
+
+def plot_snow_salinity(snowdata, ax=None):
+    """Create plot of snow salinity observations.
+    :snowdata: pandas.DataFrame containing snow data
+    :ax: matplotlib.Axes
+    """
+    if not ax: ax = plt.gca()
+    ax = plot_panel(ax)
+    ax = mscatter(snowdata, 'Salinity [ppt]',
+                  ax=ax,
+                  color=DEFAULT_MARKER_COLOR,
+                  size=DEFAULT_MARKER_SIZE)
+    ax.set_ylim(-0.05, 0.6)
+    ax.set_ylabel('Salinity (ppt)')
+    ax.legend(handles=site_legend_handles(), loc="upper left")
+    return ax
+
 
 def plot_snowdata_and_met():
     """Plots air temperature and snowpack parameters for MOSAiC ROS event"""
@@ -210,15 +227,7 @@ def plot_snowdata_and_met():
     ax[1] = plot_snow_temperature(metdata, snowdata, ax=ax[1])
     ax[2] = plot_snow_density(snowdata, ax=ax[2])
     ax[3] = plot_snow_water_equivalent(snowdata, ax=ax[3])
-    
-    # Snow salinity
-    # Snow water equivalent
-    ax[4] = plot_panel(ax[4])
-    ax[4] = mscatter(snowdata, 'Salinity [ppt]', ax=ax[4], color=DEFAULT_MARKER_COLOR,
-                     size=50)
-    ax[4].set_ylim(-0.05, 0.6)
-    ax[4].set_ylabel('Salinity (ppt)')
-    ax[4].legend(handles=site_legend_handles(), loc="upper left")
+    ax[4] = plot_snow_salinity(snowdata, ax=ax[4])
 
     plt.tight_layout()
     plt.show()
