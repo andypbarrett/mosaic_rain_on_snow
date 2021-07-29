@@ -212,7 +212,7 @@ def plot_snow_salinity(snowdata, ax=None):
                   size=DEFAULT_MARKER_SIZE)
     ax.set_ylim(-0.05, 0.6)
     ax.set_ylabel('Salinity (ppt)')
-    ax.legend(handles=site_legend_handles(), loc="upper left")
+    ax.legend(handles=site_legend_handles(), loc="lower left")
     return ax
 
 
@@ -221,7 +221,8 @@ def plot_snowdata_and_met():
     metdata = reader.metdata()
     snowdata = reader.snowdata()
 
-    fig, ax = plt.subplots(5, 1, figsize=(7,9), sharex=True)
+    fig, ax = plt.subplots(5, 1, figsize=(7, 9), sharex=True,
+                           constrained_layout=True)
 
     ax[0] = plot_meteorological_data(metdata, ax=ax[0])
     ax[1] = plot_snow_temperature(metdata, snowdata, ax=ax[1])
@@ -229,9 +230,9 @@ def plot_snowdata_and_met():
     ax[3] = plot_snow_water_equivalent(snowdata, ax=ax[3])
     ax[4] = plot_snow_salinity(snowdata, ax=ax[4])
 
-    plt.tight_layout(h_pad=0.01)
-    plt.show()
+    fig.set_constrained_layout_pads(h_pad=0.01)
 
 
 if __name__ == "__main__":
     plot_snowdata_and_met()
+    plt.show()
