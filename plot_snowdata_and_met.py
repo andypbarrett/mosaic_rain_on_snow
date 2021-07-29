@@ -82,7 +82,9 @@ def plot_snowdata_and_met():
     ax[1] = mscatter(snowdata, 'Bulk Temp (C)', ax=ax[1], color='blue', size=50)
     ax[1].set_xlabel('')
     ax[1].set_ylabel('Tsnow ($^{\circ}C$)')
-    ax[1].legend()
+    handles, labels = ax[1].get_legend_handles_labels()
+    print(labels)
+    ax[1].legend(handles, labels)
     
     # Snow density and SSA
     ax[2] = plot_panel(ax[2])
