@@ -229,7 +229,7 @@ def plot_snowdata_and_met():
     ax[3] = plot_snow_water_equivalent(snowdata, ax=ax[3])
     ax[4] = plot_snow_salinity(snowdata, ax=ax[4])
 
-    plt.tight_layout()
+    plt.tight_layout(h_pad=0.01)
     plt.show()
 
 
