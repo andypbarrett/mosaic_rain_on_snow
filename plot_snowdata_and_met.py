@@ -66,17 +66,8 @@ def density_legend_handles(markersize=8):
     return handles
 
 
-def define_markers():
-    """Returns list of marker paths for plotting with mscatter"""
-    paths = []
-    for m in site_markers:
-        mobj = mmarkers.MarkerStyle(m)
-        path = mobj.get_path().transformed(mobj.get_transform())
-        paths.append(path)
-    return paths
-
-
 def mscatter(df, column, ax=None, color='k', size=1, label=None):
+    """Creates a scatter plot using different markers for each point"""
     if not ax: ax=plt.gca()
     xs = df.index.values
     ys = df[column]
