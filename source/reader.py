@@ -34,3 +34,13 @@ def metdata():
 def snowdata():
     """Returns pandas dataframe containing snowpit observations"""
     return pd.read_csv(SNOWDATA_PATH, parse_dates=True, index_col="Timestamp")
+
+
+def these_columns(x):
+    return "Unnamed" not in x
+
+def kukadata():
+    """Returns pandas dataframe containing KuKa radar data"""
+    df = pd.read_csv(KUKA_PATH, index_col="Date/Time", usecols=these_columns)
+    df.index = pd.to_datetime(df.index, format="%m/%d/%Y %H:%M")
+    return df
