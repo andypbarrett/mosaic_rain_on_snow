@@ -23,7 +23,7 @@ metfile_path = [DATAPATH / f for f in metfiles]
 
 SNOWDATA_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data/Snow_RoS.csv"
 KUKA_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data/KuKa_RoS.csv"
-SBR_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data"
+SBR_PATH = Path("/home/apbarret/src/mosaic_rain_on_snow/data")
 
 def metdata():
     """Loads meteorological tower data"""
@@ -44,3 +44,22 @@ def kukadata():
     df = pd.read_csv(KUKA_PATH, index_col="Date/Time", usecols=these_columns)
     df.index = pd.to_datetime(df.index, format="%m/%d/%Y %H:%M")
     return df
+
+
+def onesbr(frequency):
+    """Reads one of the SBR files"""
+    df = pd.read_csv(SBR_PATH / f"tb{frequency}_leg5_calibrated.txt",
+                     index_col="Date",
+                     parse_dates={"Date": [0, 1]},
+                     delim_whitespace=True,
+                     header=None,
+                     usecols=[0, 1, 21, 22])
+    df.columns = [f"{frequency}H", f"{frequency}V"]
+    return df
+
+
+def sbrdata():
+    """Load SBR files and join into one DataFrame"""
+    df19 = onesbr("19")
+    df89 = onesbr("89")
+    return df19.join(df89)
