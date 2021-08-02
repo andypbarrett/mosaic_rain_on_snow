@@ -23,6 +23,7 @@ metfile_path = [DATAPATH / f for f in metfiles]
 
 SNOWDATA_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data/Snow_RoS.csv"
 KUKA_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data/KuKa_RoS.csv"
+SBR_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data"
 
 def metdata():
     """Loads meteorological tower data"""
