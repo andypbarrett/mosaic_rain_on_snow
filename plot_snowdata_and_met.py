@@ -79,7 +79,7 @@ def mscatter(df, column, ax=None, color='k', size=1, label=None):
     return ax
 
 
-def plot_panel(ax):
+def plot_panel(ax, fig_label):
     """Adds a plot panel"""
     datefmt = mdates.DateFormatter("%d")
 
@@ -95,10 +95,21 @@ def plot_panel(ax):
 
     ax.axvspan(ros_beg, ros_end, color='0.8', zorder=0)
 
+    if fig_label: add_fig_label(fig_label, ax)
+    
     return ax
 
 
-def plot_meteorological_data(metdata, ax=None):
+def add_fig_label(label, ax):
+    ax.text(0.01, 0.98, label,
+            transform=ax.transAxes,
+            verticalalignment="top",
+            horizontalalignment="left",
+            fontsize=15,
+            bbox={"facecolor": "white", "edgecolor": "None", "alpha": 0.5})
+    
+    
+def plot_meteorological_data(metdata, ax=None, fig_label=None):
     """Creates panel with meteorological data
     :metdata: xarray.DataFrame containing meteorological tower data
 
@@ -106,7 +117,7 @@ def plot_meteorological_data(metdata, ax=None):
     """
     tair_min_limit = -20.
     tair_max_limit = 3.
-    ax = plot_panel(ax)
+    ax = plot_panel(ax, fig_label)
     metdata.temp_2m.plot(ax=ax, color=DEFAULT_DATA_LINE_COLOR, lw=2)
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
     ax.set_ylim(tair_min_limit, tair_max_limit)
@@ -115,14 +126,14 @@ def plot_meteorological_data(metdata, ax=None):
     return ax
 
 
-def plot_snow_temperature(metdata, snowdata, ax=None):
+def plot_snow_temperature(metdata, snowdata, ax=None, fig_label=None):
     """Creates panel with snow temperature data
     :metdata: xarray.DataSet with meteorological data
     :snowdata: pandas.DataFrame with snow data
 
     :ax: matplotlib.Axes instance
     """
-    ax = plot_panel(ax)
+    ax = plot_panel(ax, fig_label)
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
     ax.set_ylim(-20, 3)
     metdata.brightness_temp_surface.plot(
@@ -152,7 +163,7 @@ def plot_snow_temperature(metdata, snowdata, ax=None):
     return ax
 
 
-def plot_snow_density(snowdata, ax=None):
+def plot_snow_density(snowdata, ax=None, fig_label=None):
     """Create plot of snow density parameters.  Plots bulk density,
        desnity from micro-CT and SSA from micro-CT
     :snowdata: pandas.DataFrame containing snow data
@@ -160,7 +171,7 @@ def plot_snow_density(snowdata, ax=None):
     :ax: matplotlib.Axes
     """
     if not ax: ax = plt.gca()
-    ax = plot_panel(ax)
+    ax = plot_panel(ax, fig_label)
     ax = mscatter(snowdata, 'Bulk snow density',
                   ax=ax, color=density_colors[0],
                   size=DEFAULT_MARKER_SIZE)
@@ -179,17 +190,17 @@ def plot_snow_density(snowdata, ax=None):
     ax_ssa.set_ylim(0., 25.)
     ax_ssa.set_ylabel('Specific Surface Area ($m^2 kg^{-1}$)')
 
-    ax.legend(handles=density_legend_handles())
+    ax.legend(handles=density_legend_handles(), loc="lower left")
     return ax
 
 
-def plot_snow_water_equivalent(snowdata, ax=None):
+def plot_snow_water_equivalent(snowdata, ax=None, fig_label=None):
     """Creates plots of snow water equivalent
     :snowdata: pandas.DataFrame containing snow data
     :ax: matplotlib.Axes
     """
     if not ax: ax = plt.gca()
-    ax = plot_panel(ax)
+    ax = plot_panel(ax, fig_label)
     ax = mscatter(snowdata, 'SWE (mm)',
                   ax=ax,
                   color=DEFAULT_MARKER_COLOR,
@@ -199,13 +210,13 @@ def plot_snow_water_equivalent(snowdata, ax=None):
     return ax
 
 
-def plot_snow_salinity(snowdata, ax=None):
+def plot_snow_salinity(snowdata, ax=None, fig_label=None):
     """Create plot of snow salinity observations.
     :snowdata: pandas.DataFrame containing snow data
     :ax: matplotlib.Axes
     """
     if not ax: ax = plt.gca()
-    ax = plot_panel(ax)
+    ax = plot_panel(ax, fig_label)
     ax = mscatter(snowdata, 'Salinity [ppt]',
                   ax=ax,
                   color=DEFAULT_MARKER_COLOR,
@@ -224,15 +235,15 @@ def plot_snowdata_and_met():
     fig, ax = plt.subplots(5, 1, figsize=(7, 9), sharex=True,
                            constrained_layout=True)
 
-    ax[0] = plot_meteorological_data(metdata, ax=ax[0])
-    ax[1] = plot_snow_temperature(metdata, snowdata, ax=ax[1])
-    ax[2] = plot_snow_density(snowdata, ax=ax[2])
-    ax[3] = plot_snow_water_equivalent(snowdata, ax=ax[3])
-    ax[4] = plot_snow_salinity(snowdata, ax=ax[4])
+    ax[0] = plot_meteorological_data(metdata, ax=ax[0], fig_label="a)")
+    ax[1] = plot_snow_temperature(metdata, snowdata, ax=ax[1], fig_label="b)")
+    ax[2] = plot_snow_density(snowdata, ax=ax[2], fig_label="c)")
+    ax[3] = plot_snow_water_equivalent(snowdata, ax=ax[3], fig_label="d)")
+    ax[4] = plot_snow_salinity(snowdata, ax=ax[4], fig_label="e)")
 
     fig.set_constrained_layout_pads(h_pad=0.01)
+    fig.savefig("mosaic_rain_on_snow_figure01.png")
 
 
 if __name__ == "__main__":
     plot_snowdata_and_met()
-    plt.show()
