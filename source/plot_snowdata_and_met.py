@@ -1,5 +1,4 @@
 """Plots air temperature and snowpack parameters for MOSAiC ROS event"""
-
 import matplotlib.pyplot as plt
 import matplotlib.markers as mmarkers
 import matplotlib.lines as mlines
@@ -7,7 +6,7 @@ import matplotlib.lines as mlines
 import numpy as np
 
 import reader
-
+import plotting
 
 site_name = ["ROV",
              "ALBK",
@@ -94,7 +93,7 @@ def plot_meteorological_data(metdata, ax=None, fig_label=None):
     """
     tair_min_limit = -20.
     tair_max_limit = 3.
-    ax = plot_panel(ax, fig_label)
+    ax = plotting.add_panel(ax, fig_label)
     metdata.temp_2m.plot(ax=ax, color=DEFAULT_DATA_LINE_COLOR, lw=2)
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
     ax.set_ylim(tair_min_limit, tair_max_limit)
@@ -110,7 +109,7 @@ def plot_snow_temperature(metdata, snowdata, ax=None, fig_label=None):
 
     :ax: matplotlib.Axes instance
     """
-    ax = plot_panel(ax, fig_label)
+    ax = plotting.add_panel(ax, fig_label)
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
     ax.set_ylim(-20, 3)
     metdata.brightness_temp_surface.plot(
@@ -148,7 +147,7 @@ def plot_snow_density(snowdata, ax=None, fig_label=None):
     :ax: matplotlib.Axes
     """
     if not ax: ax = plt.gca()
-    ax = plot_panel(ax, fig_label)
+    ax = plotting.add_panel(ax, fig_label)
     ax = mscatter(snowdata, 'Bulk snow density',
                   ax=ax, color=density_colors[0],
                   size=DEFAULT_MARKER_SIZE)
@@ -177,7 +176,7 @@ def plot_snow_water_equivalent(snowdata, ax=None, fig_label=None):
     :ax: matplotlib.Axes
     """
     if not ax: ax = plt.gca()
-    ax = plot_panel(ax, fig_label)
+    ax = plotting.add_panel(ax, fig_label)
     ax = mscatter(snowdata, 'SWE (mm)',
                   ax=ax,
                   color=DEFAULT_MARKER_COLOR,
@@ -193,7 +192,7 @@ def plot_snow_salinity(snowdata, ax=None, fig_label=None):
     :ax: matplotlib.Axes
     """
     if not ax: ax = plt.gca()
-    ax = plot_panel(ax, fig_label)
+    ax = plotting.add_panel(ax, fig_label)
     ax = mscatter(snowdata, 'Salinity [ppt]',
                   ax=ax,
                   color=DEFAULT_MARKER_COLOR,
