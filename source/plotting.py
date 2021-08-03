@@ -3,7 +3,7 @@ import datetime as dt
 import matplotlib.dates as mdates
 
 
-def plot_panel(ax, fig_label):
+def add_panel(ax, fig_label):
     """Adds a plot panel"""
     datefmt = mdates.DateFormatter("%d")
 
