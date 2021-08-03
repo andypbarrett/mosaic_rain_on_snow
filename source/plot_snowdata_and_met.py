@@ -1,6 +1,5 @@
 """Plots air temperature and snowpack parameters for MOSAiC ROS event"""
 import matplotlib.pyplot as plt
-import matplotlib.markers as mmarkers
 import matplotlib.lines as mlines
 
 import numpy as np
