@@ -44,6 +44,7 @@ def plot_sbr(df, ax=None, fig_label=None):
     df.plot(ax=ax)
     ax.legend(loc="lower left")
 
+
 def split_kuka(kuka, frequency):
     """Split kuka dataframe into Ku and Ka"""
     df = kuka.loc[:,[frequency in col for col in kuka.columns]]
