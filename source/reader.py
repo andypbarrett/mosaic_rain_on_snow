@@ -47,7 +47,7 @@ def kukadata():
 
 
 def onesbr(frequency):
-    """Reads one of the SBR files"""
+    """Reads one of the SBR files and returns Tb for angle = 55"""
     if frequency == "19":
         usecols = [0, 1, 4, 21, 22]
     else:
