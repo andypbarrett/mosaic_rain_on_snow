@@ -76,15 +76,6 @@ def mscatter(df, column, ax=None, color='k', size=1, label=None):
     return ax
 
 
-def add_fig_label(label, ax):
-    ax.text(0.01, 0.98, label,
-            transform=ax.transAxes,
-            verticalalignment="top",
-            horizontalalignment="left",
-            fontsize=15,
-            bbox={"facecolor": "white", "edgecolor": "None", "alpha": 0.5})
-    
-    
 def plot_meteorological_data(metdata, ax=None, fig_label=None):
     """Creates panel with meteorological data
     :metdata: xarray.DataFrame containing meteorological tower data

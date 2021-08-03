@@ -3,6 +3,15 @@ import datetime as dt
 import matplotlib.dates as mdates
 
 
+def add_fig_label(label, ax):
+    ax.text(0.01, 0.98, label,
+            transform=ax.transAxes,
+            verticalalignment="top",
+            horizontalalignment="left",
+            fontsize=15,
+            bbox={"facecolor": "white", "edgecolor": "None", "alpha": 0.5})
+
+
 def add_panel(ax, fig_label):
     """Adds a plot panel"""
     datefmt = mdates.DateFormatter("%d")
@@ -20,7 +29,5 @@ def add_panel(ax, fig_label):
     ax.axvspan(ros_beg, ros_end, color='0.8', zorder=0)
 
     if fig_label: add_fig_label(fig_label, ax)
-    
+
     return ax
-
-
