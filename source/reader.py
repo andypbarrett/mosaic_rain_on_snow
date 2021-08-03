@@ -49,16 +49,18 @@ def kukadata():
 def onesbr(frequency):
     """Reads one of the SBR files"""
     if frequency == "19":
-        usecols = [0, 1, 21, 22]
+        usecols = [0, 1, 4, 21, 22]
     else:
-        usecols = [0, 1, 22, 23]
+        usecols = [0, 1, 4, 22, 23]
     df = pd.read_csv(SBR_PATH / f"tb{frequency}_leg5_calibrated.txt",
                      index_col="Date",
                      parse_dates={"Date": [0, 1]},
                      delim_whitespace=True,
                      header=None,
                      usecols=usecols)
-    df.columns = [f"{frequency}H", f"{frequency}V"]
+    df.columns = ["angle", f"{frequency}H", f"{frequency}V"]
+    df = df[df.angle == 55]
+    df = df.drop("angle", axis=1)
     return df
 
 
