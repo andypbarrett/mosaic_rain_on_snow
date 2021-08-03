@@ -1,8 +1,8 @@
 """Plots radar backscatter and microwave brightness temperature series"""
 import matplotlib.pyplot as plt
 
-import source.reader as reader
-import source.plotting as plotting
+import reader
+import plotting
 
 
 def plot_microwave():
