@@ -1,6 +1,7 @@
 """Plots radar backscatter and microwave brightness temperature series"""
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
+import seaborn as sns
 
 import reader
 import plotting
@@ -55,9 +56,14 @@ def plot_sbr(df, ax=None, fig_label=None):
 
 
 
-def kd_plot(df, ax=None, fig_label=None):
-    """Creates kernal density plot panel"""
+def kd_plot(df, variables, ax=None, fig_label=None):
+    """Creates kernal density plot panel
+    :df: pandas.Dataframe with data
+    :variables: variables to plot"""
     if not ax: ax = plt.gca()
+    for var in variables:
+        sns.kdeplot(data=df, y=var, ax=ax)
+    return ax
 
 
 def split_kuka(kuka, frequency):
@@ -88,7 +94,7 @@ def plot_microwave():
 
     # Kernal density plots, following Vishnu's method
     ax3 = fig.add_subplot(gs[0, 4], sharey=ax0)
-    kd_plot(ku_df, ax=ax3, fig_label="b)")
+    kd_plot(ku_df, ku_df.columns, ax=ax3, fig_label="b)")
 
 
     fig.set_constrained_layout_pads(h_pad=0.01)
