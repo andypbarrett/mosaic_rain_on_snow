@@ -24,6 +24,8 @@ def plot_ku(df, ax=None, fig_label=None):
     if not ax: plt.gca()
     plotting.add_panel(ax=ax, fig_label=fig_label)
     df.plot(ax=ax, color=RADAR_COLORS, style=RADAR_LINESTYLES)
+    ax.set_ylim(-35, 10)
+    ax.set_ylabel("Backscatter (dB)")
     ax.legend(loc="lower left")
     return ax
 
@@ -33,6 +35,8 @@ def plot_ka(df, ax=None, fig_label=None):
     if not ax: plt.gca()
     plotting.add_panel(ax=ax, fig_label=fig_label)
     df.plot(ax=ax, color=RADAR_COLORS, style=RADAR_LINESTYLES)
+    ax.set_ylim(-35, 10)
+    ax.set_ylabel("Backscatter (dB)")
     ax.legend(loc="lower left")
     return ax
 
