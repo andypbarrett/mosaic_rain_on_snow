@@ -74,6 +74,7 @@ def split_kuka(kuka, frequency):
 
 
 def plot_microwave():
+    """Creates microwave backscatter/Tb figure for MOSAiC ROS paper"""
     kuka = reader.kukadata()
     sbr = reader.sbrdata()
 
@@ -96,6 +97,11 @@ def plot_microwave():
     ax3 = fig.add_subplot(gs[0, 4], sharey=ax0)
     kd_plot(ku_df, ku_df.columns, ax=ax3, fig_label="b)")
 
+    ax4 = fig.add_subplot(gs[1, 4], sharey=ax1, sharex=ax3)
+    kd_plot(ka_df, ka_df.columns, ax=ax4, fig_label="d)")
+
+    ax5 = fig.add_subplot(gs[2, 4], sharey=ax2)
+    kd_plot(sbr, sbr.columns, ax=ax5, fig_label="f)")
 
     fig.set_constrained_layout_pads(h_pad=0.01)
     plt.show()
