@@ -67,9 +67,9 @@ def plot_microwave():
     fig, ax = plt.subplots(3, 1, figsize=(7, 9),
                            sharex=True,
                            constrained_layout=True)
-    plot_ku(ku_df, ax=ax[0], fig_label="a)")
-    plot_ka(ka_df, ax=ax[1], fig_label="b)")
-    plot_sbr(sbr, ax=ax[2], fig_label="c)")
+    plot_ku(ku_df, ax=ax[0], fig_label="a) Ku")
+    plot_ka(ka_df, ax=ax[1], fig_label="b) Ka")
+    plot_sbr(sbr, ax=ax[2], fig_label="c) SBR")
     
     plt.show()
     fig.savefig("mosaic_rain_on_snow_microwave.png")
