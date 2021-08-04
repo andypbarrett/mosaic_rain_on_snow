@@ -36,9 +36,9 @@ def add_panel(ax, fig_label):
                color='0.8',
                zorder=0)
     ax.axvspan(RAIN_EVENT_01[0], RAIN_EVENT_01[1],
-               hatch='..', fill=False, linestyle='None', zorder=1)
+               hatch='..', fill=False, linestyle='-', zorder=1)
     ax.axvspan(RAIN_EVENT_02[0], RAIN_EVENT_02[1],
-               hatch='..', fill=False, linestyle='None', zorder=1)
+               hatch='..', fill=False, linestyle='-', zorder=1)
 
     if fig_label: add_fig_label(fig_label, ax)
 
