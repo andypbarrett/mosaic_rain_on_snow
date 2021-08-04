@@ -26,7 +26,8 @@ def plot_ku(df, ax=None, fig_label=None):
     df.plot(ax=ax, color=RADAR_COLORS, style=RADAR_LINESTYLES)
     ax.set_ylim(-35, 10)
     ax.set_ylabel("Backscatter (dB)")
-    ax.legend(loc="lower left")
+    ax.set_yticks(range(-35,15,5))
+    ax.legend(loc="lower left", ncol=2)
     return ax
 
 
@@ -37,7 +38,8 @@ def plot_ka(df, ax=None, fig_label=None):
     df.plot(ax=ax, color=RADAR_COLORS, style=RADAR_LINESTYLES)
     ax.set_ylim(-35, 10)
     ax.set_ylabel("Backscatter (dB)")
-    ax.legend(loc="lower left")
+    ax.set_yticks(range(-35,15,5))
+    ax.legend(loc="lower left", ncol=2)
     return ax
 
 
@@ -46,7 +48,7 @@ def plot_sbr(df, ax=None, fig_label=None):
     if not ax: plt.gca()
     plotting.add_panel(ax=ax, fig_label=fig_label)
     df.plot(ax=ax)
-    ax.legend(loc="lower left")
+    ax.legend(loc="lower left", ncol=1)
 
 
 def split_kuka(kuka, frequency):
