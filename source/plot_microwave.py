@@ -82,7 +82,7 @@ def plot_microwave():
     ku_df = split_kuka(kuka, "Ku")
     ka_df = split_kuka(kuka, "Ka")
 
-    fig = plt.figure(figsize=(7, 9), constrained_layout=True)
+    fig = plt.figure(figsize=(7, 9), constrained_layout=False)
     gs = GridSpec(3, 5, figure=fig)
     ax0 = fig.add_subplot(gs[0, :-1])
     plot_ku(ku_df, ax=ax0, fig_label="a) Ku")
@@ -95,15 +95,18 @@ def plot_microwave():
 
     # Kernal density plots, following Vishnu's method
     ax3 = fig.add_subplot(gs[0, 4], sharey=ax0)
+    ax3.tick_params(labelleft=False, left=False,  labelbottom=False)
     kd_plot(ku_df, ku_df.columns, ax=ax3, fig_label="b)")
 
     ax4 = fig.add_subplot(gs[1, 4], sharey=ax1, sharex=ax3)
+    ax4.tick_params(labelleft=False, left=False)
     kd_plot(ka_df, ka_df.columns, ax=ax4, fig_label="d)")
 
     ax5 = fig.add_subplot(gs[2, 4], sharey=ax2)
+    ax5.tick_params(labelleft=False, left=False)
     kd_plot(sbr, sbr.columns, ax=ax5, fig_label="f)")
 
-    fig.set_constrained_layout_pads(h_pad=0.01)
+    fig.subplots_adjust(wspace=0.05)
     plt.show()
 
     fig.savefig("mosaic_rain_on_snow_microwave.png")
