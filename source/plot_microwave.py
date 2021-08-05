@@ -33,6 +33,10 @@ SBR_LINESTYLES = ['-',
                   '--',
                   '-',
                   '--']
+SBR_MARKERS = ['.',
+               '+',
+               '.',
+               '+']
 SBR_SHADE = [True,
              False,
              True,
@@ -67,8 +71,12 @@ def plot_sbr(df, ax=None, fig_label=None):
     """Plots SBR Tb"""
     if not ax: plt.gca()
     plotting.add_panel(ax=ax, fig_label=fig_label)
-    df.plot(ax=ax, marker='.', linestyle='None',
-            markersize=5, color="tab:blue")
+    for column, marker, color in zip(df.columns, SBR_MARKERS, SBR_COLORS):
+        df[column].plot(ax=ax,
+                        marker=marker,
+                        linestyle='None',
+                        markersize=2,
+                        color=color)
     ax.set_ylim(150, 300)
     ax.set_ylabel("Brightness Temperature (K)")
     ax.legend(loc="lower left", ncol=2)
