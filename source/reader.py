@@ -5,8 +5,8 @@ from pathlib import Path
 import xarray as xr
 import pandas as pd
 
-
-DATAPATH = Path("/home/apbarret/Data/MOSAiC/met")
+ROOT_PATH = Path("home", "apbarret")
+MET_DATAPATH = ROOT_PATH / "Data" / "MOSAiC" / "met")
 metfiles = [
     'mosflxtowermet.level2.10min.20200909.000000.nc',
     'mosflxtowermet.level2.10min.20200910.000000.nc',
@@ -19,11 +19,11 @@ metfiles = [
     'mosflxtowermet.level2.10min.20200917.000000.nc',
     'mosflxtowermet.level2.10min.20200918.000000.nc',
 ]
-metfile_path = [DATAPATH / f for f in metfiles]
+metfile_path = [MET_DATAPATH / f for f in metfiles]
 
-SNOWDATA_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data/Snow_RoS.csv"
-KUKA_PATH = "/home/apbarret/src/mosaic_rain_on_snow/data/KuKa_RoS.csv"
-SBR_PATH = Path("/home/apbarret/src/mosaic_rain_on_snow/data")
+SNOWDATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "Snow_RoS.csv"
+KUKA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "KuKa_RoS.csv"
+SBR_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
 
 def metdata():
     """Loads meteorological tower data"""
