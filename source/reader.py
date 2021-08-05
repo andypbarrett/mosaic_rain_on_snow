@@ -73,8 +73,3 @@ def sbrdata(resample="1H"):
     df19 = onesbr("19", resample=resample)
     df89 = onesbr("89", resample=resample)
     return df19.join(df89)
-
-
-def sbrdata2():
-    return pd.read_csv('sbr_test.csv', index_col=0,
-                       header=0, parse_dates=True)
