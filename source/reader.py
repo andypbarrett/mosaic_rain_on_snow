@@ -5,7 +5,7 @@ from pathlib import Path
 import xarray as xr
 import pandas as pd
 
-ROOT_PATH = Path("home", "apbarret")
+ROOT_PATH = Path("/home", "apbarret")
 MET_DATAPATH = ROOT_PATH / "Data" / "MOSAiC" / "met"
 metfiles = [
     'mosflxtowermet.level2.10min.20200909.000000.nc',
