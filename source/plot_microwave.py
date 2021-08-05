@@ -141,7 +141,8 @@ def plot_microwave():
             ax=ax4,
             fig_label="d)")
     ax4.set_xlabel('')
-
+    print(ax4.get_xticklabels())
+    
     ax5 = fig.add_subplot(gs[2, 4], sharey=ax2)
     ax5.tick_params(labelleft=False, left=False)
     kd_plot(sbr,
