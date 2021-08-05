@@ -19,6 +19,24 @@ RADAR_LINESTYLES = ['-',
                     '--',
                     '-',
                     '--']
+RADAR_SHADE = [True,
+               False,
+               True,
+               False,
+               True,
+               False]
+SBR_COLORS = ['tab:red',
+              'tab:red',
+              'tab:blue',
+              'tab:blue']
+SBR_LINESTYLES = ['-',
+                  '--',
+                  '-',
+                  '--']
+SBR_SHADE = [True,
+             False,
+             True,
+             False]
 
 
 def plot_ku(df, ax=None, fig_label=None):
@@ -49,20 +67,21 @@ def plot_sbr(df, ax=None, fig_label=None):
     """Plots SBR Tb"""
     if not ax: plt.gca()
     plotting.add_panel(ax=ax, fig_label=fig_label)
-    df.plot(ax=ax, marker='.', linestyle='None')
+    df.plot(ax=ax, marker='.', linestyle='None',
+            markersize=5, color="tab:blue")
     ax.set_ylim(150, 300)
     ax.set_ylabel("Brightness Temperature (K)")
     ax.legend(loc="lower left", ncol=2)
 
 
 
-def kd_plot(df, variables, ax=None, fig_label=None):
+def kd_plot(df, variables, colors, shading, linestyle, ax=None, fig_label=None):
     """Creates kernal density plot panel
     :df: pandas.Dataframe with data
     :variables: variables to plot"""
     if not ax: ax = plt.gca()
-    for var in variables:
-        sns.kdeplot(data=df, y=var, ax=ax)
+    for var, col, shd, ls in zip(variables, colors, shading, linestyle):
+        sns.kdeplot(data=df, y=var, color=col, shade=shd, linestyle=ls, ax=ax)
     return ax
 
 
@@ -96,15 +115,34 @@ def plot_microwave():
     # Kernal density plots, following Vishnu's method
     ax3 = fig.add_subplot(gs[0, 4], sharey=ax0)
     ax3.tick_params(labelleft=False, left=False,  labelbottom=False)
-    kd_plot(ku_df, ku_df.columns, ax=ax3, fig_label="b)")
+    kd_plot(ku_df,
+            ku_df.columns,
+            RADAR_COLORS,
+            RADAR_SHADE,
+            RADAR_LINESTYLES,
+            ax=ax3,
+            fig_label="b)")
 
     ax4 = fig.add_subplot(gs[1, 4], sharey=ax1, sharex=ax3)
     ax4.tick_params(labelleft=False, left=False)
-    kd_plot(ka_df, ka_df.columns, ax=ax4, fig_label="d)")
+    kd_plot(ka_df,
+            ka_df.columns,
+            RADAR_COLORS,
+            RADAR_SHADE,
+            RADAR_LINESTYLES,
+            ax=ax4,
+            fig_label="d)")
+    ax4.set_xlabel('')
 
     ax5 = fig.add_subplot(gs[2, 4], sharey=ax2)
     ax5.tick_params(labelleft=False, left=False)
-    kd_plot(sbr, sbr.columns, ax=ax5, fig_label="f)")
+    kd_plot(sbr,
+            sbr.columns,
+            SBR_COLORS,
+            SBR_SHADE,
+            SBR_LINESTYLES,
+            ax=ax5,
+            fig_label="f)")
 
     fig.subplots_adjust(wspace=0.05)
     plt.show()
