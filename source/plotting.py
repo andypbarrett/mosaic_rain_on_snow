@@ -12,7 +12,7 @@ RAIN_EVENT_02 = [dt.datetime(2020, 9, 14, 1, 0),
                  dt.datetime(2020, 9, 14, 4, 0)]
 
 XBEGIN = dt.datetime(2020, 9, 9, 0)  # x-axis minimum
-XEND = dt.datetime(2020, 9, 16, 0)   # x-axis maximum
+XEND = dt.datetime(2020, 9, 18, 0)   # x-axis maximum
 
 
 def add_fig_label(label, ax):
