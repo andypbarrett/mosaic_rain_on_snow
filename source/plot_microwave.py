@@ -119,7 +119,8 @@ def plot_microwave():
 
     ax2 = fig.add_subplot(gs[2, :-1], sharex=ax0)
     plot_sbr(sbr, ax=ax2, fig_label="e) SBR")
-
+    ax2.set_xlabel('September 2020')
+    
     # Kernal density plots, following Vishnu's method
     ax3 = fig.add_subplot(gs[0, 4], sharey=ax0)
     ax3.tick_params(labelleft=False, left=False,  labelbottom=False)
@@ -141,7 +142,9 @@ def plot_microwave():
             ax=ax4,
             fig_label="d)")
     ax4.set_xlabel('')
-    ax4.set_xticks([xt for xt in ax4.get_xticks() if xt != 0])
+    ax4.set_xticks([0., 0.2])
+    ax4.set_xticklabels(['0', '0.2'])
+
 
     ax5 = fig.add_subplot(gs[2, 4], sharey=ax2)
     ax5.tick_params(labelleft=False, left=False)
@@ -152,9 +155,11 @@ def plot_microwave():
             SBR_LINESTYLES,
             ax=ax5,
             fig_label="f)")
-    ax5.set_xticks([xt for xt in ax5.get_xticks() if xt != 0])
+    ax5.set_xticks([0., 0.02])
+    ax5.set_xticklabels(['0', '0.02'])
 
-    fig.subplots_adjust(wspace=0.05)
+
+    fig.subplots_adjust(wspace=0.15)
     plt.show()
 
     fig.savefig("mosaic_rain_on_snow_microwave.png")
