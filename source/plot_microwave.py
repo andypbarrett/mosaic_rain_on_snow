@@ -141,8 +141,8 @@ def plot_microwave():
             ax=ax4,
             fig_label="d)")
     ax4.set_xlabel('')
-    print(ax4.get_xticklabels())
-    
+    ax4.set_xticks([xt for xt in ax4.get_xticks() if xt != 0])
+
     ax5 = fig.add_subplot(gs[2, 4], sharey=ax2)
     ax5.tick_params(labelleft=False, left=False)
     kd_plot(sbr,
@@ -152,6 +152,7 @@ def plot_microwave():
             SBR_LINESTYLES,
             ax=ax5,
             fig_label="f)")
+    ax5.set_xticks([xt for xt in ax5.get_xticks() if xt != 0])
 
     fig.subplots_adjust(wspace=0.05)
     plt.show()
