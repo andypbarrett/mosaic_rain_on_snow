@@ -75,9 +75,9 @@ def plot_sbr(df, ax=None, fig_label=None):
         ax.plot(df.index.values, df[chan].values,
                 color=color, linestyle=lines,
                 label=chan)
-    ax.set_ylim(150, 300)
+    ax.set_ylim(100, 300)
     ax.set_ylabel("Brightness Temperature (K)")
-    ax.legend(loc="lower left", ncol=4)
+    ax.legend(loc="lower left", ncol=2)
 
 
 
