@@ -71,7 +71,7 @@ def plot_sbr(df, ax=None, fig_label=None):
     """Plots SBR Tb"""
     if not ax: plt.gca()
     plotting.add_panel(ax=ax, fig_label=fig_label)
-    #df.plot(ax=ax, color=SBR_COLORS, style=SBR_LINESTYLES)
+    df.plot(ax=ax, color=SBR_COLORS, style=SBR_LINESTYLES)
     ax.set_ylim(150, 300)
     ax.set_ylabel("Brightness Temperature (K)")
     ax.legend(loc="lower left", ncol=2)
