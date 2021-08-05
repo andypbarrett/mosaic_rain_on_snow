@@ -46,8 +46,11 @@ def kukadata():
     return df
 
 
-def onesbr(frequency):
-    """Reads one of the SBR files and returns Tb for angle = 55"""
+def onesbr(frequency, resample="1H"):
+    """Reads one of the SBR files and returns Tb for angle = 55
+    :frequency: frequency of data (19 or 89 GHz)
+    :resample: time period for resample
+    """
     if frequency == "19":
         usecols = [0, 1, 4, 21, 22]
     else:
@@ -61,11 +64,12 @@ def onesbr(frequency):
     df.columns = ["angle", f"{frequency}H", f"{frequency}V"]
     df = df[df.angle == 55]
     df = df.drop("angle", axis=1)
+    df = df.resample(resample).mean()
     return df
 
 
-def sbrdata():
+def sbrdata(resample="1H"):
     """Load SBR files and join into one DataFrame"""
-    df19 = onesbr("19")
-    df89 = onesbr("89")
+    df19 = onesbr("19", resample=resample)
+    df89 = onesbr("89", resample=resample)
     return df19.join(df89)
