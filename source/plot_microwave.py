@@ -114,6 +114,8 @@ def plot_microwave():
 
     ax1 = fig.add_subplot(gs[1, :-1], sharex=ax0)
     plot_ka(ka_df, ax=ax1, fig_label="c) Ka")
+    ax1.tick_params(labelbottom=False)
+    ax1.set_xlabel('')
 
     ax2 = fig.add_subplot(gs[2, :-1], sharex=ax0)
     plot_sbr(sbr, ax=ax2, fig_label="e) SBR")
