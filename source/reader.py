@@ -22,7 +22,7 @@ metfiles = [
 metfile_path = [MET_DATAPATH / f for f in metfiles]
 
 SNOWDATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "Snow_RoS.csv"
-KUKA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "KuKa_RoS.csv"
+KUKA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "KuKa_RoS_corrected_KuKaPy.csv"
 SBR_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
 
 def metdata():
