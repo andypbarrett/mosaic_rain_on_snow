@@ -101,7 +101,7 @@ def split_kuka(kuka, frequency):
 def plot_microwave():
     """Creates microwave backscatter/Tb figure for MOSAiC ROS paper"""
     kuka = reader.kukadata()
-    sbr = reader.sbrdata2()
+    sbr = reader.sbrdata()
     
     # For now, split Ku and Ka channels into separate Dataframes
     ku_df = split_kuka(kuka, "Ku")
