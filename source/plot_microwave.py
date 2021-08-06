@@ -88,6 +88,7 @@ def kd_plot(df, variables, colors, shading, linestyle, ax=None, fig_label=None):
     if not ax: ax = plt.gca()
     for var, col, shd, ls in zip(variables, colors, shading, linestyle):
         sns.kdeplot(data=df, y=var, color=col, shade=shd, linestyle=ls, ax=ax)
+    if fig_label: plotting.add_fig_label(fig_label, ax)
     return ax
 
 
