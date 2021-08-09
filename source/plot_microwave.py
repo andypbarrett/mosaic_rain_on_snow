@@ -114,12 +114,12 @@ def plot_microwave():
     plot_ku(ku_df, ax=ax0, fig_label="a) Ku")
 
     ax1 = fig.add_subplot(gs[1, :-1], sharex=ax0)
-    plot_ka(ka_df, ax=ax1, fig_label="c) Ka")
+    plot_ka(ka_df, ax=ax1, fig_label="b) Ka")
     ax1.tick_params(labelbottom=False)
     ax1.set_xlabel('')
 
     ax2 = fig.add_subplot(gs[2, :-1], sharex=ax0)
-    plot_sbr(sbr, ax=ax2, fig_label="e) SBR")
+    plot_sbr(sbr, ax=ax2, fig_label="c) SBR")
     ax2.set_xlabel('September 2020')
     
     # Kernal density plots, following Vishnu's method
@@ -131,7 +131,7 @@ def plot_microwave():
             RADAR_SHADE,
             RADAR_LINESTYLES,
             ax=ax3,
-            fig_label="b)")
+            fig_label=None)
 
     ax4 = fig.add_subplot(gs[1, 4], sharey=ax1, sharex=ax3)
     ax4.tick_params(labelleft=False, left=False)
@@ -141,7 +141,7 @@ def plot_microwave():
             RADAR_SHADE,
             RADAR_LINESTYLES,
             ax=ax4,
-            fig_label="d)")
+            fig_label=None)
     ax4.set_xlabel('')
     ax4.set_xticks([0., 0.2])
     ax4.set_xticklabels(['0', '0.2'])
@@ -155,7 +155,7 @@ def plot_microwave():
             SBR_SHADE,
             SBR_LINESTYLES,
             ax=ax5,
-            fig_label="f)")
+            fig_label=None)
     ax5.set_xticks([0., 0.02])
     ax5.set_xticklabels(['0', '0.02'])
 
