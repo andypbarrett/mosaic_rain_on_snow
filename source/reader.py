@@ -21,6 +21,7 @@ metfiles = [
 ]
 metfile_path = [MET_DATAPATH / f for f in metfiles]
 
+SNOWSALINITY_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "mosaic_ros_snow_updated.csv"
 SNOWDATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "Snow_RoS.csv"
 KUKA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "KuKa_RoS_corrected_KuKaPy.csv"
 SBR_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
@@ -34,6 +35,14 @@ def metdata():
 def snowdata():
     """Returns pandas dataframe containing snowpit observations"""
     return pd.read_csv(SNOWDATA_PATH, parse_dates=True, index_col="Timestamp")
+
+
+def snow_salinity():
+    """Returns snow salinity data"""
+    return pd.read_csv(SNOWSALINITY_PATH,
+                       parse_dates=True,
+                       index_col="Timestamp",
+                       usecols=["Timestamp", "Location", "Salinity [ppt]"])
 
 
 def these_columns(x):
