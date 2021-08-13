@@ -205,14 +205,13 @@ def plot_snowdata_and_met():
     metdata = reader.metdata()
     snowdata = reader.snowdata()
 
-    fig, ax = plt.subplots(5, 1, figsize=(7, 9), sharex=True,
+    fig, ax = plt.subplots(4, 1, figsize=(7, 9), sharex=True,
                            constrained_layout=True)
 
-    ax[0] = plot_meteorological_data(metdata, ax=ax[0], fig_label="a)")
-    ax[1] = plot_snow_temperature(metdata, snowdata, ax=ax[1], fig_label="b)")
-    ax[2] = plot_snow_density(snowdata, ax=ax[2], fig_label="c)")
-    ax[3] = plot_snow_water_equivalent(snowdata, ax=ax[3], fig_label="d)")
-    ax[4] = plot_snow_salinity(snowdata, ax=ax[4], fig_label="e)")
+    ax[0] = plot_snow_temperature(metdata, snowdata, ax=ax[0], fig_label="a)")
+    ax[1] = plot_snow_density(snowdata, ax=ax[1], fig_label="b)")
+    ax[2] = plot_snow_water_equivalent(snowdata, ax=ax[2], fig_label="c)")
+    ax[3] = plot_snow_salinity(snowdata, ax=ax[3], fig_label="d)")
 
     fig.set_constrained_layout_pads(h_pad=0.01)
     fig.savefig("mosaic_rain_on_snow_figure01.png")
