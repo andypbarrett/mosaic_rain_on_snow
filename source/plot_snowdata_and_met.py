@@ -107,6 +107,13 @@ def plot_snow_temperature(metdata, snowdata, ax=None, fig_label=None):
         color=DEFAULT_DATA_LINE_COLOR,
         label='Snow surface temperature'
     )
+    metdata.temp_2m.plot(
+        ax=ax,
+        color=DEFAULT_DATA_LINE_COLOR,
+        ls=':',
+        lw=2,
+        label='2 m Air Temperature',
+    )
     ax = mscatter(snowdata,
                   'Bulk Temp (C)',
                   ax=ax,
@@ -114,7 +121,7 @@ def plot_snow_temperature(metdata, snowdata, ax=None, fig_label=None):
                   size=DEFAULT_MARKER_SIZE
                   )
     ax.set_xlabel('')
-    ax.set_ylabel('Tsnow ($^{\circ}C$)')
+    ax.set_ylabel('Temperature ($^{\circ}C$)')
 
     # Make snow temperature legend
     handles, labels = ax.get_legend_handles_labels()
