@@ -1,0 +1,7 @@
+Timestamp,Device_Operation_ID,Location,Salinity [ppt],Snow density (cutter),thickness,snow height [cm at SWE measurement],average thickness along 4.5 m (from SMP),SWE [mm]
+9/12/2020 5:00,PS122-5_61-198,SNOW5_ROV,0.0,173.0,6.0,7.0,9.8,15
+9/13/2020 8:30,PS122-5_61-236,SNOW5_ALBK,0.0,190.5,6.0,7.0,12.9,29
+9/14/2020 4:30,PS122-5_62-10,SNOW5_CORING,0.0,300.6666666666667,9.0,7.0,8.6,33
+9/14/2020 9:15,PS122-5_62-25,SNOW5_TRANS_KuKa_PIT,,332.0,3.0,3.5,6.2,21
+9/15/2020 4:45,PS122-5_62-39,SNOW5_FLUX,0.05,264.5,6.0,9.0,7.6,27
+9/15/2020 9:10,PS122-5_62-44,SNOW5_RS,0.1,310.0,3.0,4.0,5.7,16
