@@ -104,13 +104,13 @@ def plot_snow_temperature(metdata, snowdata, ax=None, fig_label=None):
     ax.set_ylim(-20, 3)
     metdata.brightness_temp_surface.plot(
         ax=ax,
-        color=DEFAULT_DATA_LINE_COLOR,
+        color='c',
+        lw=2,
         label='Snow surface temperature'
     )
     metdata.temp_2m.plot(
         ax=ax,
         color=DEFAULT_DATA_LINE_COLOR,
-        ls=':',
         lw=2,
         label='2 m Air Temperature',
     )
