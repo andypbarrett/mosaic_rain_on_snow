@@ -194,8 +194,9 @@ def plot_snow_salinity(snowdata, ax=None, fig_label=None):
                   ax=ax,
                   color=DEFAULT_MARKER_COLOR,
                   size=DEFAULT_MARKER_SIZE)
-    ax.set_ylim(-0.05, 0.6)
+    ax.set_ylim(-0.005, 0.15)
     ax.set_ylabel('Salinity (ppt)')
+    ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
     ax.legend(handles=site_legend_handles(), loc="lower left")
     return ax
 
@@ -204,14 +205,15 @@ def plot_snowdata_and_met():
     """Plots air temperature and snowpack parameters for MOSAiC ROS event"""
     metdata = reader.metdata()
     snowdata = reader.snowdata()
-
+    snow_salinity = reader.snow_salinity()
+    
     fig, ax = plt.subplots(4, 1, figsize=(7, 9), sharex=True,
                            constrained_layout=True)
 
     ax[0] = plot_snow_temperature(metdata, snowdata, ax=ax[0], fig_label="a)")
     ax[1] = plot_snow_density(snowdata, ax=ax[1], fig_label="b)")
     ax[2] = plot_snow_water_equivalent(snowdata, ax=ax[2], fig_label="c)")
-    ax[3] = plot_snow_salinity(snowdata, ax=ax[3], fig_label="d)")
+    ax[3] = plot_snow_salinity(snow_salinity, ax=ax[3], fig_label="d)")
 
     fig.set_constrained_layout_pads(h_pad=0.01)
     fig.savefig("mosaic_rain_on_snow_figure01.png")
