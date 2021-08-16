@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
 import numpy as np
+import pandas as pd
 
 import reader
 import plotting
@@ -26,13 +27,17 @@ density_colors = [
     "y",
     ]
 
-DEFAULT_MARKER_SIZE = 50
-DEFAULT_MARKER_COLOR = "c"
+DEFAULT_MARKER_SIZE     = 50
+DEFAULT_MARKER_COLOR    = "c"
 DEFAULT_DATA_LINE_COLOR = "black"
 DEFAULT_ZERO_LINE_COLOR = "0.3"
 
+SWE_MARKER_COLOR        = "m"
+TOTAL_PRECIP_LINE_COLOR = "red"
+DIAMETER_LINE_COLOR     = "blue"
 
-def site_legend_handles(color=DEFAULT_MARKER_COLOR, markersize=8):
+
+def site_legend_handles(color="grey", markersize=8):
     """Generates legend for site markers"""
     handles = []
     for marker, label in zip(site_markers, site_name):
@@ -166,24 +171,107 @@ def plot_snow_density(snowdata, ax=None, fig_label=None):
     ax.legend(handles=density_legend_handles(), loc="lower left")
     return ax
 
+def calc_precip_rate(bucketdata):
 
-def plot_snow_water_equivalent(snowdata, ax=None, fig_label=None):
-    """Creates plots of snow water equivalent
+    hourly_range = pd.date_range(bucketdata.index[0], bucketdata.index[-1], freq="60min")
+    
+    means = []
+    times = []
+    bd = bucketdata.bucket_rt
+    for ihour, hour in enumerate(hourly_range):
+
+        try:
+            means.append(bd[hour:hourly_range[ihour+1]].mean())
+            times.append(hour)
+        except Exception as e:
+            do_nothing = True # last index will fail
+            
+    rates = []
+    for imean, mean in enumerate(means):
+        try: rates.append(means[imean+1] - mean)
+        except: do_nothing = True # should only fail on last calculation (index offset)
+
+    rate_df = pd.DataFrame(rates, index=times[0:-1], columns=['precip_rate'])
+    
+
+    df_reindexed = rate_df.reindex(index = bd.index)
+    final_df = df_reindexed.interpolate(method = 'linear')
+    return final_df
+
+def plot_precip_vars(precipdata, ax=None, fig_label=None):
+    """Create  plot of size distribution and precip rate (pluvio+parsivel).  
+
     :snowdata: pandas.DataFrame containing snow data
+    
     :ax: matplotlib.Axes
     """
+
+    precipdata['bucket_rt'] = precipdata['bucket_rt'] - precipdata.bucket_rt[precipdata.bucket_rt.isna()==False][0]
+    precipdata['bucket_rt'][precipdata['bucket_rt'] <0] = np.nan
+    precipdata = pd.concat([precipdata, calc_precip_rate(precipdata.copy())], axis=1)
+    precipdata = precipdata.to_xarray()
+
     if not ax: ax = plt.gca()
     ax = plotting.add_panel(ax, fig_label)
-    ax = mscatter(snowdata, 'SWE (mm)',
-                  ax=ax,
-                  color=DEFAULT_MARKER_COLOR,
-                  size=DEFAULT_MARKER_SIZE)
-    ax.set_ylim(0., 35)
-    ax.set_ylabel('SWE (mm)')
+    precipdata.diameter_max.plot(
+        ax=ax,
+        color=DIAMETER_LINE_COLOR,
+        lw=2,
+        label='Max diameter',
+    )
+
+    #ax.set_ylim(120., 370)
+    ax.set_ylabel('Diameter ($mm$)')
+
+    # Add sencond y-axis for SSA
+    ax_ssa = ax.twinx()
+    if not ax : ax = plt.gca()
+    precipdata.precip_rate.plot(
+        ax=ax_ssa,
+        color=TOTAL_PRECIP_LINE_COLOR,
+        lw=2,
+        label='Precip rate',
+    )
+ 
+    #ax_ssa.set_ylim(0., 25.)
+    ax_ssa.set_ylabel('Rate ($mm/hr$)')
+
+    # Make snow temperature legend
+    handles, labels = ax.get_legend_handles_labels()
+    handles_ssa, labels_ssa = ax_ssa.get_legend_handles_labels()
+    ax.legend(handles+handles_ssa, labels+labels_ssa, loc="upper right")
     return ax
 
 
-def plot_snow_salinity(snowdata, ax=None, fig_label=None):
+def plot_fall_speed(kazrdata, ax=None, fig_label=None):
+
+    kazrdata['range'] = kazrdata.range/1000.0
+    range_lims = (0, 10)
+
+
+    cb_kwargs = {"shrink" : 0.9,
+                 "orientation" : "vertical",
+                 "pad" : -0.08,
+                 "aspect" : 15,
+                 "location" : 'right',
+                 "label" : "Fall speed ($m/s$)"}
+
+    if not ax: ax = plt.gca()
+    ax = plotting.add_panel(ax, fig_label)
+
+    kazrdata.mean_doppler_velocity.plot(ax=ax, 
+                                        x='time', y='range', 
+                                        ylim=range_lims, 
+                                        cbar_kwargs=cb_kwargs, vmin=-3, vmax=3, 
+                                        label='Fall speed',
+                                        cmap='PRGn')
+ 
+    ax.set_ylabel(f'Height [km]')
+
+    return ax
+
+
+def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None):
     """Create plot of snow salinity observations.
     :snowdata: pandas.DataFrame containing snow data
     :ax: matplotlib.Axes
@@ -197,23 +285,42 @@ def plot_snow_salinity(snowdata, ax=None, fig_label=None):
     ax.set_ylim(-0.005, 0.15)
     ax.set_ylabel('Salinity (ppt)')
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
+
+    # Add sencond y-axis for SSA
+    ax_ssa = ax.twinx()
+    mscatter(salinitydata, 'SWE (mm)',
+                  ax=ax_ssa,
+                  color=SWE_MARKER_COLOR,
+                  size=DEFAULT_MARKER_SIZE)
+    ax_ssa.set_ylim(0., 35)
+    ax_ssa.set_ylabel('SWE (mm)')
+
     ax.legend(handles=site_legend_handles(), loc="lower left")
+
     return ax
 
 
 def plot_snowdata_and_met():
-    """Plots air temperature and snowpack parameters for MOSAiC ROS event"""
-    metdata = reader.metdata()
-    snowdata = reader.snowdata()
+    """Plots air temperature, precip, and snowpack parameters for MOSAiC ROS event"""
+    metdata       = reader.metdata()
+    snowdata      = reader.snowdata()
     snow_salinity = reader.snow_salinity()
-    
-    fig, ax = plt.subplots(4, 1, figsize=(7, 9), sharex=True,
-                           constrained_layout=True)
+    hydmet_data   = reader.precipdata()
 
-    ax[0] = plot_snow_temperature(metdata, snowdata, ax=ax[0], fig_label="a)")
-    ax[1] = plot_snow_density(snowdata, ax=ax[1], fig_label="b)")
-    ax[2] = plot_snow_water_equivalent(snowdata, ax=ax[2], fig_label="c)")
-    ax[3] = plot_snow_salinity(snow_salinity, ax=ax[3], fig_label="d)")
+    # get precip data, but the pickles don't quite line up
+    time_start = (mdf := metdata.lat_tower.to_dataframe()).index[0] # walrus abuse
+    time_end   = mdf.index[-144]
+    precipdata = pd.concat([hydmet_data['pluvio'].bucket_rt.to_dataframe(), hydmet_data['parsivel'].diameter_max.to_dataframe()], axis=1)
+    precipdata = precipdata[time_start:time_end]
+    kazrdata   = hydmet_data['kazr'].sel(time=slice(time_start, time_end))
+
+    fig, ax = plt.subplots(5, 1, figsize=(7, 11), sharex=True, constrained_layout=True)
+
+    ax[0] = plot_snow_temperature      (metdata, snowdata,       ax=ax[0], fig_label="a)")
+    ax[1] = plot_precip_vars           (precipdata,              ax=ax[1], fig_label="b)")
+    ax[2] = plot_fall_speed            (kazrdata,                ax=ax[2], fig_label="c)")
+    ax[3] = plot_snow_density          (snowdata,                ax=ax[3], fig_label="d)")
+    ax[4] = plot_snow_salinity_swe     (snow_salinity, snowdata, ax=ax[4], fig_label="e)")
 
     fig.set_constrained_layout_pads(h_pad=0.01)
     fig.savefig("mosaic_rain_on_snow_figure01.png")
