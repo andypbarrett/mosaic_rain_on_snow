@@ -25,6 +25,21 @@ SNOWSALINITY_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "mosaic
 SNOWDATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "Snow_RoS.csv"
 KUKA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "KuKa_RoS_corrected_KuKaPy.csv"
 SBR_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
+PRECIP_PATH = ROOT_PATH / "data"
+
+def precipdata():
+    """Load Michael precip pickle files"""
+
+    name_list = ['pluvio', 'kazr', 'parsivel']
+    xarr_dict = {}
+    for subdir, dirs, files in os.walk(PRECIP_PATH):
+        for f in files:
+            inst = f.split('_')[0]
+            if inst in name_list:
+                ds = xr.open_dataset(PRECIP_PATH / f)
+                xarr_dict[inst] = ds.copy()
+
+    return xarr_dict 
 
 def metdata():
     """Loads meteorological tower data"""
