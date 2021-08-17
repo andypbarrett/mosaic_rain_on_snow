@@ -177,14 +177,15 @@ def plot_snow_density(snowdata, ax=None, fig_label=None):
     return ax
 
 def calc_precip_rate(bucketdata):
-
-    hourly_range = pd.date_range(bucketdata.index[0], bucketdata.index[-1], freq="60min")
+    """Calculate precipitation rate from bucket data"""
+    hourly_range = pd.date_range(bucketdata.index[0],
+                                 bucketdata.index[-1],
+                                 freq="60min")
     
     means = []
     times = []
     bd = bucketdata.bucket_rt
     for ihour, hour in enumerate(hourly_range):
-
         try:
             means.append(bd[hour:hourly_range[ihour+1]].mean())
             times.append(hour)
@@ -193,18 +194,21 @@ def calc_precip_rate(bucketdata):
             
     rates = []
     for imean, mean in enumerate(means):
-        try: rates.append(means[imean+1] - mean)
-        except: do_nothing = True # should only fail on last calculation (index offset)
+        try:
+            rates.append(means[imean+1] - mean)
+        except:
+            do_nothing = True # should only fail on last calculation (index offset)
 
     rate_df = pd.DataFrame(rates, index=times[0:-1], columns=['precip_rate'])
     
-
     df_reindexed = rate_df.reindex(index = bd.index)
     final_df = df_reindexed.interpolate(method = 'linear')
     return final_df
 
+
 def plot_precip_vars(precipdata, ax=None, fig_label=None):
-    """Create  plot of size distribution and precip rate (pluvio+parsivel).  
+    """Create  plot of size distribution and precip rate 
+    (pluvio+parsivel).
 
     :snowdata: pandas.DataFrame containing snow data
     
@@ -225,7 +229,6 @@ def plot_precip_vars(precipdata, ax=None, fig_label=None):
         label='Max diameter',
     )
 
-    #ax.set_ylim(120., 370)
     ax.set_ylabel('Diameter ($mm$)')
 
     # Add sencond y-axis for SSA
@@ -238,7 +241,6 @@ def plot_precip_vars(precipdata, ax=None, fig_label=None):
         label='Precip rate',
     )
  
-    #ax_ssa.set_ylim(0., 25.)
     ax_ssa.set_ylabel('Rate ($mm/hr$)')
 
     # Make snow temperature legend
@@ -254,24 +256,24 @@ def plot_fall_speed(kazrdata, ax=None, fig_label=None):
     range_lims = (0, 10)
 
 
-    cb_kwargs = {"shrink" : 0.9,
-                 "orientation" : "vertical",
-                 "pad" : -0.08,
-                 "aspect" : 15,
-                 "location" : 'right',
-                 "label" : "Fall speed ($m/s$)"}
+    cb_kwargs = {"shrink": 0.9,
+                 #"orientation": "vertical",
+                 "pad": -0.08,
+                 "aspect": 15,
+                 "location": 'right',
+                 "label": "Fall speed ($m/s$)"}
 
     if not ax: ax = plt.gca()
     ax = plotting.add_panel(ax, fig_label)
 
-    kazrdata.mean_doppler_velocity.plot(ax=ax, 
-                                        x='time', y='range', 
-                                        ylim=range_lims, 
-                                        cbar_kwargs=cb_kwargs, vmin=-3, vmax=3, 
+    kazrdata.mean_doppler_velocity.plot(ax=ax,
+                                        x='time', y='range',
+                                        ylim=range_lims,
+                                        cbar_kwargs=cb_kwargs, vmin=-3, vmax=3,
                                         label='Fall speed',
                                         cmap='PRGn')
- 
-    ax.set_ylabel(f'Height [km]')
+    ax.set_ylabel('Height (km)')
+    ax.set_xlabel('')
 
     return ax
 
