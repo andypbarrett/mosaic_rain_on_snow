@@ -1,6 +1,7 @@
 """Loaders for data for MOSAiC rain on snow event plots"""
 
 from pathlib import Path
+import os
 
 import xarray as xr
 import pandas as pd
@@ -25,7 +26,7 @@ SNOWSALINITY_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "mosaic
 SNOWDATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "Snow_RoS.csv"
 KUKA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "KuKa_RoS_corrected_KuKaPy.csv"
 SBR_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
-PRECIP_PATH = ROOT_PATH / "data"
+PRECIP_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
 
 def precipdata():
     """Load Michael precip pickle files"""
