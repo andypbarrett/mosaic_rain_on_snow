@@ -214,7 +214,6 @@ def plot_precip_vars(precipdata, ax=None, fig_label=None):
     
     :ax: matplotlib.Axes
     """
-
     precipdata['bucket_rt'] = precipdata['bucket_rt'] - precipdata.bucket_rt[precipdata.bucket_rt.isna()==False][0]
     precipdata['bucket_rt'][precipdata['bucket_rt'] <0] = np.nan
     precipdata = pd.concat([precipdata, calc_precip_rate(precipdata.copy())], axis=1)
@@ -228,44 +227,40 @@ def plot_precip_vars(precipdata, ax=None, fig_label=None):
         lw=2,
         label='Max diameter',
     )
-
     ax.set_ylabel('Diameter ($mm$)')
-
-    # Add sencond y-axis for SSA
-    ax_ssa = ax.twinx()
+    ax.set_xlabel('')
+    
+    # Plot precip rate on second axis
+    ax_prt = ax.twinx()
     if not ax : ax = plt.gca()
     precipdata.precip_rate.plot(
-        ax=ax_ssa,
+        ax=ax_prt,
         color=TOTAL_PRECIP_LINE_COLOR,
         lw=2,
         label='Precip rate',
     )
- 
-    ax_ssa.set_ylabel('Rate ($mm/hr$)')
+    ax_prt.set_ylabel('Rate ($mm/hr$)')
 
-    # Make snow temperature legend
+    # Add legend
     handles, labels = ax.get_legend_handles_labels()
-    handles_ssa, labels_ssa = ax_ssa.get_legend_handles_labels()
-    ax.legend(handles+handles_ssa, labels+labels_ssa, loc="upper right")
+    handles_prt, labels_prt = ax_prt.get_legend_handles_labels()
+    ax.legend(handles+handles_prt, labels+labels_prt, loc="upper right")
     return ax
 
 
 def plot_fall_speed(kazrdata, ax=None, fig_label=None):
-
+    """Plot fall speed from KAZR data"""
     kazrdata['range'] = kazrdata.range/1000.0
     range_lims = (0, 10)
 
-
     cb_kwargs = {"shrink": 0.9,
-                 #"orientation": "vertical",
+                 "orientation": "vertical",
                  "pad": -0.08,
                  "aspect": 15,
-                 "location": 'right',
                  "label": "Fall speed ($m/s$)"}
 
     if not ax: ax = plt.gca()
     ax = plotting.add_panel(ax, fig_label)
-
     kazrdata.mean_doppler_velocity.plot(ax=ax,
                                         x='time', y='range',
                                         ylim=range_lims,
