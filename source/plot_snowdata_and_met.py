@@ -1,9 +1,15 @@
 """Plots air temperature and snowpack parameters for MOSAiC ROS event"""
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
+import matplotlib.lines as mlines
+import matplotlib.dates as dates
 
 import numpy as np
 import pandas as pd
+
+from debug_functions import drop_me as dm
+
+
 
 import reader
 import plotting
@@ -32,9 +38,10 @@ DEFAULT_MARKER_COLOR    = "c"
 DEFAULT_DATA_LINE_COLOR = "black"
 DEFAULT_ZERO_LINE_COLOR = "0.3"
 
-SWE_MARKER_COLOR        = "m"
-TOTAL_PRECIP_LINE_COLOR = "red"
-DIAMETER_LINE_COLOR     = "blue"
+SWE_MARKER_COLOR        = "lightcoral"
+SALINITY_MARKER_COLOR   = "cornflowerblue"
+TOTAL_PRECIP_LINE_COLOR = "m"
+DIAMETER_LINE_COLOR     = "black"
 
 
 def site_legend_handles(color="grey", markersize=8):
@@ -69,12 +76,14 @@ def density_legend_handles(markersize=8):
     return handles
 
 
-def mscatter(df, column, ax=None, color='k', size=1, label=None):
+def mscatter(df, column, ax=None, color='k', size=1, label=None, background=None):
     """Creates a scatter plot using different markers for each point"""
     if not ax: ax = plt.gca()
     xs = df.index.values
     ys = df[column]
     for x, y, m in zip(xs, ys, site_markers):
+        if background != None:
+            ax.scatter(x, y, size*2.5, marker=m, c=background, zorder=10, label=label)
         if np.isfinite(y):
             ax.scatter(x, y, size, marker=m, c=color, zorder=10, label=label)
     return ax
@@ -280,8 +289,11 @@ def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None):
     ax = plotting.add_panel(ax, fig_label)
     ax = mscatter(snowdata, 'Salinity [ppt]',
                   ax=ax,
-                  color=DEFAULT_MARKER_COLOR,
-                  size=DEFAULT_MARKER_SIZE)
+                  color="grey",
+                  size=DEFAULT_MARKER_SIZE,
+                  background=SALINITY_MARKER_COLOR,
+                  )
+
     ax.set_ylim(-0.005, 0.15)
     ax.set_ylabel('Salinity (ppt)')
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
@@ -290,12 +302,20 @@ def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None):
     ax_ssa = ax.twinx()
     mscatter(salinitydata, 'SWE (mm)',
                   ax=ax_ssa,
-                  color=SWE_MARKER_COLOR,
-                  size=DEFAULT_MARKER_SIZE)
+                  color="grey", 
+                  size=DEFAULT_MARKER_SIZE,
+                  background=SWE_MARKER_COLOR,
+             )
     ax_ssa.set_ylim(0., 35)
     ax_ssa.set_ylabel('SWE (mm)')
-
     ax.legend(handles=site_legend_handles(), loc="lower left")
+
+    #ax.spines['left'].set_color(SALINITY_MARKER_COLOR)
+    ax.tick_params(axis='y', colors=SALINITY_MARKER_COLOR)
+    ax_ssa.tick_params(axis='y', colors=SWE_MARKER_COLOR)
+    ax_ssa.spines['right'].set_color(SWE_MARKER_COLOR)
+    ax_ssa.spines['left'].set_color(SALINITY_MARKER_COLOR)
+
 
     return ax
 
@@ -322,9 +342,15 @@ def plot_snowdata_and_met():
     ax[3] = plot_snow_density          (snowdata,                ax=ax[3], fig_label="d)")
     ax[4] = plot_snow_salinity_swe     (snow_salinity, snowdata, ax=ax[4], fig_label="e)")
 
+
+    date_form = dates.DateFormatter("%m-%d")
+    ax[4].xaxis.set_major_formatter(date_form)
+
+
     fig.set_constrained_layout_pads(h_pad=0.01)
     fig.savefig("mosaic_rain_on_snow_figure01.png")
-
+    
+    dm(locals(),0)
 
 if __name__ == "__main__":
     plot_snowdata_and_met()

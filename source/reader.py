@@ -27,21 +27,17 @@ KUKA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "KuKa_RoS_corre
 SBR_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
 PRECIP_PATH = ROOT_PATH / "data"
 
-
 def precipdata():
     """Load Michael precip pickle files"""
-    import pickle
 
-    extension = ('.pkl')
+    name_list = ['pluvio', 'kazr', 'parsivel']
     xarr_dict = {}
     for subdir, dirs, files in os.walk(PRECIP_PATH):
         for f in files:
-            ext = os.path.splitext(f)[-1].lower()
             inst = f.split('_')[0]
-            if ext in extension:
-                with open(subdir+"/"+f, 'rb') as pickle_file:  
-                    ds = pickle.load(pickle_file) 
-                    xarr_dict[inst] = ds.copy()
+            if inst in name_list:
+                ds = xr.open_dataset(PRECIP_PATH / f)
+                xarr_dict[inst] = ds.copy()
 
     return xarr_dict 
 
