@@ -6,6 +6,10 @@ import os
 import xarray as xr
 import pandas as pd
 
+from .plotting import XBEGIN as data_start_time
+from .plotting import XEND as data_end_time
+
+
 ROOT_PATH = Path("/home", "apbarret")
 MET_DATAPATH = ROOT_PATH / "Data" / "MOSAiC" / "met"
 metfiles = [
@@ -22,25 +26,33 @@ metfiles = [
 ]
 metfile_path = [MET_DATAPATH / f for f in metfiles]
 
-SNOWSALINITY_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "mosaic_ros_snow_updated.csv"
-SNOWDATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "Snow_RoS.csv"
-KUKA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data" / "KuKa_RoS_corrected_KuKaPy.csv"
-SBR_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
-PRECIP_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
+REPODATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
+SNOWSALINITY_PATH = REPODATA_PATH / "mosaic_ros_snow_updated.csv"
+SNOWDATA_PATH = REPODATA_PATH / "Snow_RoS.csv"
+KUKA_PATH = REPODATA_PATH / "KuKa_RoS_corrected_KuKaPy.csv"
+SBR_PATH = REPODATA_PATH
+PLUVIO_PATH = REPODATA_PATH / "pluvio_ds_2020-09-09 00:00:00_2020-09-20 00:00:00.nc"
+KAZR_PATH = REPODATA_PATH / "kazr_ds_2020-09-09 00:00:00_2020-09-20 00:00:00.nc"
+PARSIVEL_PATH = REPODATA_PATH / "parsivel_ds_2020-09-09 00:00:00_2020-09-20 00:00:00.nc"
+
+
+def kazrdata():
+    """Loads Ka-band zenith radar vertical velocity"""
+    ds = xr.open_dataset(KAZR_PATH)
+    ds = ds.sel(time=slice(data_start_time, data_end_time))
+    return ds
+
 
 def precipdata():
-    """Load Michael precip pickle files"""
+    """Load bucket and max diameter data"""
+    pluvio = xr.open_dataset(PLUVIO_PATH)
+    parsivel = xr.open_dataset(PARSIVEL_PATH)}
+    df = pd.concat([pluvio.bucket_rt.to_dataframe(),
+                    parsivel.diameter_max.to_dataframe()],
+                    axis=1)
+    df = df[time_start:time_end]
+    return df
 
-    name_list = ['pluvio', 'kazr', 'parsivel']
-    xarr_dict = {}
-    for subdir, dirs, files in os.walk(PRECIP_PATH):
-        for f in files:
-            inst = f.split('_')[0]
-            if inst in name_list:
-                ds = xr.open_dataset(PRECIP_PATH / f)
-                xarr_dict[inst] = ds.copy()
-
-    return xarr_dict 
 
 def metdata():
     """Loads meteorological tower data"""
