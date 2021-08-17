@@ -1,13 +1,12 @@
 """Loaders for data for MOSAiC rain on snow event plots"""
 
 from pathlib import Path
-import os
 
 import xarray as xr
 import pandas as pd
 
-from .plotting import XBEGIN as data_start_time
-from .plotting import XEND as data_end_time
+from plotting import XBEGIN as data_start_time
+from plotting import XEND as data_end_time
 
 
 ROOT_PATH = Path("/home", "apbarret")
@@ -46,11 +45,11 @@ def kazrdata():
 def precipdata():
     """Load bucket and max diameter data"""
     pluvio = xr.open_dataset(PLUVIO_PATH)
-    parsivel = xr.open_dataset(PARSIVEL_PATH)}
+    parsivel = xr.open_dataset(PARSIVEL_PATH)
     df = pd.concat([pluvio.bucket_rt.to_dataframe(),
                     parsivel.diameter_max.to_dataframe()],
                     axis=1)
-    df = df[time_start:time_end]
+    df = df[data_start_time:data_end_time]
     return df
 
 

@@ -319,18 +319,19 @@ def plot_snowdata_and_met():
     metdata = reader.metdata()
     snowdata = reader.snowdata()
     snow_salinity = reader.snow_salinity()
-    hydmet_data = reader.precipdata()
+#    hydmet_data = reader.precipdata()
     kazrdata = reader.kazrdata()
-    
+    precipdata = reader.precipdata()
+
     # get precip data, but the pickles don't quite line up
-    mdf = metdata.lat_tower.to_dataframe()
-    time_start = mdf.index[0]
-    time_end = mdf.index[-144]
-    precipdata = pd.concat([hydmet_data['pluvio'].bucket_rt.to_dataframe(),
-                            hydmet_data['parsivel'].diameter_max.to_dataframe()],
-                           axis=1)
-    precipdata = precipdata[time_start:time_end]
-    #kazrdata = hydmet_data['kazr'].sel(time=slice(time_start, time_end))
+#    mdf = metdata.lat_tower.to_dataframe()
+#    time_start = mdf.index[0]
+#    time_end = mdf.index[-144]
+#    precipdata = pd.concat([hydmet_data['pluvio'].bucket_rt.to_dataframe(),
+#                            hydmet_data['parsivel'].diameter_max.to_dataframe()],
+#                           axis=1)
+#    precipdata = precipdata[time_start:time_end]
+#    kazrdata = hydmet_data['kazr'].sel(time=slice(time_start, time_end))
 
     fig, ax = plt.subplots(5, 1, figsize=(7, 11), sharex=True,
                            constrained_layout=True)
