@@ -71,14 +71,16 @@ def density_legend_handles(markersize=8):
     return handles
 
 
-def mscatter(df, column, ax=None, color='k', size=1, label=None, background=None):
+def mscatter(df, column, ax=None, color='k', size=1,
+             label=None, background=None):
     """Creates a scatter plot using different markers for each point"""
     if not ax: ax = plt.gca()
     xs = df.index.values
     ys = df[column]
     for x, y, m in zip(xs, ys, site_markers):
-        if background != None:
-            ax.scatter(x, y, size*2.5, marker=m, c=background, zorder=10, label=label)
+        if background is not None:
+            ax.scatter(x, y, size*2.5, marker=m, c=background,
+                       zorder=10, label=label)
         if np.isfinite(y):
             ax.scatter(x, y, size, marker=m, c=color, zorder=10, label=label)
     return ax
