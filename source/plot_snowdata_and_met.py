@@ -322,6 +322,8 @@ def plot_snowdata_and_met():
     kazrdata = reader.kazrdata()
     precipdata = reader.precipdata()
 
+    date_form = dates.DateFormatter("%m-%d")
+
     fig, ax = plt.subplots(5, 1, figsize=(7, 11), sharex=True,
                            constrained_layout=True)
     ax[0] = plot_snow_temperature(metdata, snowdata, ax=ax[0], fig_label="a)")
@@ -330,8 +332,6 @@ def plot_snowdata_and_met():
     ax[3] = plot_snow_density(snowdata, ax=ax[3], fig_label="d)")
     ax[4] = plot_snow_salinity_swe(snow_salinity, snowdata, ax=ax[4],
                                    fig_label="e)")
-
-    date_form = dates.DateFormatter("%m-%d")
     ax[4].xaxis.set_major_formatter(date_form)
 
     fig.set_constrained_layout_pads(h_pad=0.01)
