@@ -211,12 +211,14 @@ def plot_precip_vars(precipdata, ax=None, fig_label=None):
     (pluvio+parsivel).
 
     :snowdata: pandas.DataFrame containing snow data
-    
+
     :ax: matplotlib.Axes
     """
-    precipdata['bucket_rt'] = precipdata['bucket_rt'] - precipdata.bucket_rt[precipdata.bucket_rt.isna()==False][0]
-    precipdata['bucket_rt'][precipdata['bucket_rt'] <0] = np.nan
-    precipdata = pd.concat([precipdata, calc_precip_rate(precipdata.copy())], axis=1)
+    precipdata['bucket_rt'] = precipdata['bucket_rt'] - \
+        precipdata.bucket_rt[precipdata.bucket_rt.isna() == False][0]
+    precipdata['bucket_rt'][precipdata['bucket_rt'] < 0] = np.nan
+    precipdata = pd.concat([precipdata, calc_precip_rate(precipdata.copy())],
+                           axis=1)
     precipdata = precipdata.to_xarray()
 
     if not ax: ax = plt.gca()
@@ -229,7 +231,7 @@ def plot_precip_vars(precipdata, ax=None, fig_label=None):
     )
     ax.set_ylabel('Diameter ($mm$)')
     ax.set_xlabel('')
-    
+
     # Plot precip rate on second axis
     ax_prt = ax.twinx()
     if not ax : ax = plt.gca()
@@ -294,16 +296,15 @@ def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None):
     # Add sencond y-axis for SSA
     ax_ssa = ax.twinx()
     mscatter(salinitydata, 'SWE (mm)',
-                  ax=ax_ssa,
-                  color="grey", 
-                  size=DEFAULT_MARKER_SIZE,
-                  background=SWE_MARKER_COLOR,
+             ax=ax_ssa,
+             color="grey",
+             size=DEFAULT_MARKER_SIZE,
+             background=SWE_MARKER_COLOR,
              )
     ax_ssa.set_ylim(0., 35)
     ax_ssa.set_ylabel('SWE (mm)')
     ax.legend(handles=site_legend_handles(), loc="lower left")
 
-    #ax.spines['left'].set_color(SALINITY_MARKER_COLOR)
     ax.tick_params(axis='y', colors=SALINITY_MARKER_COLOR)
     ax_ssa.tick_params(axis='y', colors=SWE_MARKER_COLOR)
     ax_ssa.spines['right'].set_color(SWE_MARKER_COLOR)
