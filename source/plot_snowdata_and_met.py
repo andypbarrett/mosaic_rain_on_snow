@@ -182,7 +182,6 @@ def calc_precip_rate(bucketdata):
     hourly_range = pd.date_range(bucketdata.index[0],
                                  bucketdata.index[-1],
                                  freq="60min")
-    
     means = []
     times = []
     bd = bucketdata.bucket_rt
@@ -191,19 +190,19 @@ def calc_precip_rate(bucketdata):
             means.append(bd[hour:hourly_range[ihour+1]].mean())
             times.append(hour)
         except Exception as e:
-            do_nothing = True # last index will fail
-            
+            do_nothing = True  # last index will fail
+
     rates = []
     for imean, mean in enumerate(means):
         try:
             rates.append(means[imean+1] - mean)
         except:
-            do_nothing = True # should only fail on last calculation (index offset)
+            do_nothing = True  # should only fail on last calculation (index offset)
 
     rate_df = pd.DataFrame(rates, index=times[0:-1], columns=['precip_rate'])
-    
-    df_reindexed = rate_df.reindex(index = bd.index)
-    final_df = df_reindexed.interpolate(method = 'linear')
+
+    df_reindexed = rate_df.reindex(index=bd.index)
+    final_df = df_reindexed.interpolate(method='linear')
     return final_df
 
 
