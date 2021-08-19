@@ -10,24 +10,23 @@ import pandas as pd
 import reader
 import plotting
 
-site_name = ["ROV",
-             "ALBK",
-             "CORING",
-             "KuKa PIT",
-             "FLUX",
-             "RS"]
+site_name = [
+    "ROV",
+    "ALBK",
+    "CORING",
+    "KuKa PIT",
+    "FLUX",
+    "RS"]
 site_markers = ["o", "v", "P", "X", "D", "s"]
 
 density_labels = [
     "Density cutter",
     "micro-CT",
-    "SSA"
-    ]
+    "SSA"]
 density_colors = [
     "c",
     "m",
-    "y",
-    ]
+    "y",]
 
 DEFAULT_MARKER_SIZE = 50
 DEFAULT_MARKER_COLOR = "c"
