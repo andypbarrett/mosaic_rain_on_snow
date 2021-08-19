@@ -29,15 +29,15 @@ density_colors = [
     "y",
     ]
 
-DEFAULT_MARKER_SIZE     = 50
-DEFAULT_MARKER_COLOR    = "c"
+DEFAULT_MARKER_SIZE = 50
+DEFAULT_MARKER_COLOR = "c"
 DEFAULT_DATA_LINE_COLOR = "black"
 DEFAULT_ZERO_LINE_COLOR = "0.3"
 
-SWE_MARKER_COLOR        = "lightcoral"
-SALINITY_MARKER_COLOR   = "cornflowerblue"
+SWE_MARKER_COLOR = "lightcoral"
+SALINITY_MARKER_COLOR = "cornflowerblue"
 TOTAL_PRECIP_LINE_COLOR = "m"
-DIAMETER_LINE_COLOR     = "black"
+DIAMETER_LINE_COLOR = "black"
 
 
 def site_legend_handles(color="grey", markersize=8):
