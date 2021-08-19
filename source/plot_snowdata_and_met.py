@@ -310,7 +310,6 @@ def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None):
     ax_ssa.spines['right'].set_color(SWE_MARKER_COLOR)
     ax_ssa.spines['left'].set_color(SALINITY_MARKER_COLOR)
 
-
     return ax
 
 
@@ -320,23 +319,11 @@ def plot_snowdata_and_met():
     metdata = reader.metdata()
     snowdata = reader.snowdata()
     snow_salinity = reader.snow_salinity()
-#    hydmet_data = reader.precipdata()
     kazrdata = reader.kazrdata()
     precipdata = reader.precipdata()
 
-    # get precip data, but the pickles don't quite line up
-#    mdf = metdata.lat_tower.to_dataframe()
-#    time_start = mdf.index[0]
-#    time_end = mdf.index[-144]
-#    precipdata = pd.concat([hydmet_data['pluvio'].bucket_rt.to_dataframe(),
-#                            hydmet_data['parsivel'].diameter_max.to_dataframe()],
-#                           axis=1)
-#    precipdata = precipdata[time_start:time_end]
-#    kazrdata = hydmet_data['kazr'].sel(time=slice(time_start, time_end))
-
     fig, ax = plt.subplots(5, 1, figsize=(7, 11), sharex=True,
                            constrained_layout=True)
-
     ax[0] = plot_snow_temperature(metdata, snowdata, ax=ax[0], fig_label="a)")
     ax[1] = plot_precip_vars(precipdata, ax=ax[1], fig_label="b)")
     ax[2] = plot_fall_speed(kazrdata, ax=ax[2], fig_label="c)")
@@ -344,10 +331,8 @@ def plot_snowdata_and_met():
     ax[4] = plot_snow_salinity_swe(snow_salinity, snowdata, ax=ax[4],
                                    fig_label="e)")
 
-
     date_form = dates.DateFormatter("%m-%d")
     ax[4].xaxis.set_major_formatter(date_form)
-
 
     fig.set_constrained_layout_pads(h_pad=0.01)
     fig.savefig("mosaic_rain_on_snow_figure01.png")
