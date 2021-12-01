@@ -165,7 +165,7 @@ def plot_snow_density(snowdata, ax=None, fig_label=None):
     ax.set_ylim(120., 370)
     ax.set_ylabel('Density ($kg m^{-3}$)')
 
-    # Add sencond y-axis for SSA
+    # Add second y-axis for SSA
     ax_ssa = ax.twinx()
     ax_ssa = mscatter(snowdata, 'SSA',
                       ax=ax_ssa,
