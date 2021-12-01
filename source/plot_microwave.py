@@ -55,7 +55,8 @@ def plot_ku(df, ax=None, fig_label=None):
     ax.set_ylim(-35, 5)
     ax.set_ylabel("Backscatter (dB)")
     ax.set_yticks(range(-35, 15, 5))
-    ax.legend(loc="lower left", ncol=2)
+    ax.legend(loc="lower left", ncol=2,
+              fontsize='small', columnspacing=1.)
     return ax
 
 
@@ -67,7 +68,8 @@ def plot_ka(df, ax=None, fig_label=None):
     ax.set_ylim(-35, 5)
     ax.set_ylabel("Backscatter (dB)")
     ax.set_yticks(range(-35, 15, 5))
-    ax.legend(loc="lower left", ncol=2)
+    ax.legend(loc="lower left", ncol=2,
+              fontsize='small', columnspacing=1.)
     return ax
 
 
@@ -81,7 +83,8 @@ def plot_sbr(df, ax=None, fig_label=None):
                 label=chan)
     ax.set_ylim(100, 300)
     ax.set_ylabel("Brightness Temperature (K)")
-    ax.legend(loc="lower left", ncol=2)
+    ax.legend(loc="lower left", ncol=2,
+              fontsize='small', columnspacing=1.)
 
 
 
@@ -91,7 +94,8 @@ def kd_plot(df, variables, colors, shading, linestyle, ax=None, fig_label=None):
     :variables: variables to plot"""
     if not ax: ax = plt.gca()
     for var, col, shd, ls in zip(variables, colors, shading, linestyle):
-        sns.kdeplot(data=df, y=var, color=col, shade=shd, linestyle=ls, ax=ax)
+        sns.kdeplot(data=df, y=var, color=col, shade=shd, linestyle=ls, ax=ax,
+                    common_norm=True)
     if fig_label: plotting.add_fig_label(fig_label, ax)
     return ax
 
