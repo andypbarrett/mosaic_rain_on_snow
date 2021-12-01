@@ -46,6 +46,7 @@ SBR_SHADE = [True,
 PRE_EVENT = TAIR_ABOVE_ZERO[0]
 POST_EVENT = TAIR_ABOVE_ZERO[1]
 
+
 def plot_ku(df, ax=None, fig_label=None):
     """Plots Ku radar channels"""
     if not ax: plt.gca()
