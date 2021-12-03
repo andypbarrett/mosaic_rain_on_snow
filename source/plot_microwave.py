@@ -140,7 +140,7 @@ def plot_microwave():
             RADAR_SHADE,
             RADAR_LINESTYLES,
             ax=ax3,
-            fig_label=None)
+            fig_label='Pre')
     #print(ax3.get_xlim())
 
     # Ku KDE after event
@@ -152,7 +152,7 @@ def plot_microwave():
             RADAR_SHADE,
             RADAR_LINESTYLES,
             ax=ax6,
-            fig_label=None)
+            fig_label='Post')
     #print(ax6.get_xlim())
 
     # Ka KDE before event
