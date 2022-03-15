@@ -1,4 +1,6 @@
 """Plots radar backscatter and microwave brightness temperature series"""
+import numpy as np
+
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import seaborn as sns
@@ -111,6 +113,10 @@ def plot_microwave():
     """Creates microwave backscatter/Tb figure for MOSAiC ROS paper"""
     kuka = reader.kukadata()
     sbr = reader.sbrdata()
+
+    # 19 GHz values before 2020-09-09 11:00:00 may be affected by
+    # moving the antenna, so I set to NaN here
+    sbr.loc[:'2020-09-09 11', ['19V','19H']] = np.nan
     
     # For now, split Ku and Ka channels into separate Dataframes
     ku_df = split_kuka(kuka, "Ku")
@@ -166,8 +172,8 @@ def plot_microwave():
             ax=ax4,
             fig_label=None)
     ax4.set_xlabel('')
-    #ax4.set_xticks([0., 0.02])
-    #ax4.set_xticklabels(['0', '0.02'])
+    ax4.set_xticks([0., 2.5])
+    ax4.set_xticklabels(['0', '2.5'])
 
     # Ka KDE after event
     ax7 = fig.add_subplot(gs[1, 5], sharey=ax1, sharex=ax6)
@@ -180,8 +186,8 @@ def plot_microwave():
             ax=ax7,
             fig_label=None)
     ax7.set_xlabel('')
-    #ax7.set_xticks([0., 0.02])
-    #ax7.set_xticklabels(['0', '0.02'])
+    ax7.set_xticks([0., 0.25])
+    ax7.set_xticklabels(['0', '0.25'])
 
     # SBR KDE before event
     ax5 = fig.add_subplot(gs[2, 4], sharey=ax2)
@@ -193,8 +199,8 @@ def plot_microwave():
             SBR_LINESTYLES,
             ax=ax5,
             fig_label=None)
-    ax5.set_xticks([0., 0.02])
-    ax5.set_xticklabels(['0', '0.02'])
+    ax5.set_xticks([0., 0.25])
+    ax5.set_xticklabels(['0', '0.25'])
 
     # SBR KDE after event
     ax8 = fig.add_subplot(gs[2, 5], sharey=ax2)
@@ -206,10 +212,10 @@ def plot_microwave():
             SBR_LINESTYLES,
             ax=ax8,
             fig_label=None)
-    ax8.set_xticks([0., 0.02])
-    ax8.set_xticklabels(['0', '0.02'])
+    ax8.set_xticks([0., 0.025])
+    ax8.set_xticklabels(['0', '0.025'])
 
-    fig.subplots_adjust(wspace=0.15)
+    fig.subplots_adjust(wspace=0.25)
     plt.show()
 
     fig.savefig("mosaic_rain_on_snow_microwave.png")
