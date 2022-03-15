@@ -21,7 +21,7 @@ def add_fig_label(label, ax):
             verticalalignment="top",
             horizontalalignment="left",
             fontsize=15,
-            bbox={"facecolor": "white", "edgecolor": "None", "alpha": 0.5})
+            bbox={"facecolor": "white", "edgecolor": "None", "alpha": 0.})
 
 
 def add_panel(ax, fig_label):
