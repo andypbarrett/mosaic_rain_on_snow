@@ -7,46 +7,14 @@ import seaborn as sns
 
 import reader
 import plotting
-from plotting import TAIR_ABOVE_ZERO
-
-
-RADAR_COLORS = ['tab:red',
-                'tab:red',
-                'tab:blue',
-                'tab:blue',
-                'tab:green',
-                'tab:green']
-RADAR_LINESTYLES = ['-',
-                    '--',
-                    '-',
-                    '--',
-                    '-',
-                    '--']
-RADAR_SHADE = [True,
-               False,
-               True,
-               False,
-               True,
-               False]
-SBR_COLORS = ['tab:red',
-              'tab:red',
-              'tab:blue',
-              'tab:blue']
-SBR_LINESTYLES = ['-',
-                  '--',
-                  '-',
-                  '--']
-SBR_MARKERS = ['.',
-               '+',
-               '.',
-               '+']
-SBR_SHADE = [True,
-             False,
-             True,
-             False]
-
-PRE_EVENT = TAIR_ABOVE_ZERO[0]
-POST_EVENT = TAIR_ABOVE_ZERO[1]
+from plotting import (PRE_EVENT,
+                      POST_EVENT,
+                      RADAR_COLORS,
+                      RADAR_LINESTYLES,
+                      RADAR_SHADE,
+                      SBR_COLORS,
+                      SBR_LINESTYLES,
+                      SBR_SHADE)
 
 
 def plot_ku(df, ax=None, fig_label=None):
