@@ -32,6 +32,7 @@ DEFAULT_MARKER_SIZE = 50
 DEFAULT_MARKER_COLOR = "c"
 DEFAULT_DATA_LINE_COLOR = "black"
 DEFAULT_ZERO_LINE_COLOR = "0.3"
+DEFAULT_SITE_MARKER_COLOR = "0.2"
 
 SWE_MARKER_COLOR = "lightcoral"
 SALINITY_MARKER_COLOR = "cornflowerblue"
@@ -39,7 +40,7 @@ TOTAL_PRECIP_LINE_COLOR = "m"
 DIAMETER_LINE_COLOR = "black"
 
 
-def site_legend_handles(color="grey", markersize=8):
+def site_legend_handles(color=DEFAULT_SITE_MARKER_COLOR, markersize=8):
     """Generates legend for site markers"""
     handles = []
     for marker, label in zip(site_markers, site_name):
@@ -320,6 +321,35 @@ def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None,
     return ax
 
 
+def plot_swe(snowdata, ax=None, fig_label=None,
+             add_site_legend=False):
+    """Create plot of snow salinity observations.
+    :snowdata: pandas.DataFrame containing snow data
+    :ax: matplotlib.Axes
+    """
+    if not ax: ax = plt.gca()
+    ax = plotting.add_panel(ax, fig_label)
+    mscatter(snowdata, 'SWE (mm)',
+             ax=ax,
+             color=DEFAULT_SITE_MARKER_COLOR,
+             size=DEFAULT_MARKER_SIZE,
+             )
+    ax.set_ylim(0., 35)
+    ax.set_ylabel('SWE (mm)')
+
+    ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
+
+    if add_site_legend:
+        ax.legend(handles=site_legend_handles(), loc="lower left")
+
+#    ax.tick_params(axis='y', colors=SALINITY_MARKER_COLOR)
+#    ax_ssa.tick_params(axis='y', colors=SWE_MARKER_COLOR)
+#    ax_ssa.spines['right'].set_color(SWE_MARKER_COLOR)
+#    ax_ssa.spines['left'].set_color(SALINITY_MARKER_COLOR)
+
+    return ax
+
+
 def plot_snowdata_and_met():
     """Plots air temperature, precip, and snowpack parameters for 
        MOSAiC ROS event"""
@@ -337,8 +367,8 @@ def plot_snowdata_and_met():
     ax[1] = plot_precip_vars(precipdata, ax=ax[1], fig_label="b)")
     ax[2] = plot_fall_speed(kazrdata, ax=ax[2], fig_label="c)")
     ax[3] = plot_snow_density(snowdata, ax=ax[3], fig_label="d)")
-    ax[4] = plot_snow_salinity_swe(snow_salinity, snowdata, ax=ax[4],
-                                   fig_label="e)", add_site_legend=True)
+    ax[4] = plot_swe(snowdata, ax=ax[4],
+                     fig_label="e)", add_site_legend=True)
 
     ax[4].xaxis.set_major_formatter(date_form)
 
