@@ -147,7 +147,8 @@ def plot_snow_temperature(metdata, snowdata, ax=None, fig_label=None):
     return ax
 
 
-def plot_snow_density(snowdata, ax=None, fig_label=None):
+def plot_snow_density(snowdata, ax=None, fig_label=None,
+                      add_site_legend=False):
     """Create plot of snow density parameters.  Plots bulk density,
        desnity from micro-CT and SSA from micro-CT
     :snowdata: pandas.DataFrame containing snow data
@@ -174,8 +175,12 @@ def plot_snow_density(snowdata, ax=None, fig_label=None):
     ax_ssa.set_ylim(0., 25.)
     ax_ssa.set_ylabel('Specific Surface Area ($m^2 kg^{-1}$)')
 
-    ax.legend(handles=density_legend_handles(), loc="lower left")
+    density_legend = ax.legend(handles=density_legend_handles(), loc="lower left")
+    if add_site_legend:
+        site_legend = ax.legend(handles=site_legend_handles(), loc="lower right")
+        ax.add_artist(density_legend)  # To dislay both legends
     return ax
+
 
 def calc_precip_rate(bucketdata):
     """Calculate precipitation rate from bucket data"""
@@ -275,7 +280,8 @@ def plot_fall_speed(kazrdata, ax=None, fig_label=None):
     return ax
 
 
-def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None):
+def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None,
+                           add_site_legend=False):
     """Create plot of snow salinity observations.
     :snowdata: pandas.DataFrame containing snow data
     :ax: matplotlib.Axes
@@ -293,7 +299,7 @@ def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None):
     ax.set_ylabel('Salinity (ppt)')
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
 
-    # Add sencond y-axis for SSA
+    # Add sencond y-axis for SWE
     ax_ssa = ax.twinx()
     mscatter(salinitydata, 'SWE (mm)',
              ax=ax_ssa,
@@ -303,7 +309,8 @@ def plot_snow_salinity_swe(snowdata, salinitydata, ax=None, fig_label=None):
              )
     ax_ssa.set_ylim(0., 35)
     ax_ssa.set_ylabel('SWE (mm)')
-    ax.legend(handles=site_legend_handles(), loc="lower left")
+    if add_site_legend:
+        ax.legend(handles=site_legend_handles(), loc="lower left")
 
     ax.tick_params(axis='y', colors=SALINITY_MARKER_COLOR)
     ax_ssa.tick_params(axis='y', colors=SWE_MARKER_COLOR)
@@ -331,7 +338,8 @@ def plot_snowdata_and_met():
     ax[2] = plot_fall_speed(kazrdata, ax=ax[2], fig_label="c)")
     ax[3] = plot_snow_density(snowdata, ax=ax[3], fig_label="d)")
     ax[4] = plot_snow_salinity_swe(snow_salinity, snowdata, ax=ax[4],
-                                   fig_label="e)")
+                                   fig_label="e)", add_site_legend=True)
+
     ax[4].xaxis.set_major_formatter(date_form)
 
     fig.set_constrained_layout_pads(h_pad=0.01)
