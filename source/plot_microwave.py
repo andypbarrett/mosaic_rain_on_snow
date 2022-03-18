@@ -12,7 +12,8 @@ from plotting import (PRE_EVENT,
                       RADAR_SHADE,
                       SBR_COLORS,
                       SBR_LINESTYLES,
-                      SBR_SHADE)
+                      SBR_SHADE,
+                      FIGURE_PATH)
 
 
 def plot_ku(df, ax=None, fig_label=None):
@@ -135,7 +136,7 @@ def plot_microwave():
     fig.subplots_adjust(wspace=0.15)
     plt.show()
 
-    fig.savefig("mosaic_rain_on_snow_microwave.png")
+    fig.savefig(FIGURE_PATH / "mosaic_rain_on_snow_microwave.png")
     return
 
 

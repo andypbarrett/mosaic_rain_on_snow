@@ -9,6 +9,7 @@ import pandas as pd
 
 import reader
 import plotting
+from plotting import FIGURE_PATH
 
 site_name = [
     "ROV",
@@ -373,7 +374,7 @@ def plot_snowdata_and_met():
     ax[4].xaxis.set_major_formatter(date_form)
 
     fig.set_constrained_layout_pads(h_pad=0.01)
-    fig.savefig("mosaic_rain_on_snow_figure01.png")
+    fig.savefig(FIGURE_PATH / "mosaic_rain_on_snow_figure01.png")
 
 
 if __name__ == "__main__":
