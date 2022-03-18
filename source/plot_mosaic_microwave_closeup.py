@@ -16,7 +16,8 @@ from plotting import (PRE_EVENT,
                       RADAR_SHADE,
                       SBR_COLORS,
                       SBR_LINESTYLES,
-                      SBR_SHADE)
+                      SBR_SHADE,
+                      FIGURE_PATH)
 
 XBEGIN = dt.datetime(2020,9,12)
 XEND = dt.datetime(2020,9,15)
@@ -143,7 +144,7 @@ def plot_mosaic_microwave_closeup():
     fig.subplots_adjust(wspace=0.25)
 
 #    plt.show()
-    fig.savefig("mosaic_rain_on_snow_microwave.closeup.png")
+    fig.savefig(FIGURE_PATH / "mosaic_rain_on_snow_microwave.closeup.png")
 
     return
 

@@ -1,7 +1,10 @@
 """Common plotting routines"""
+from pathlib import Path
+
 import datetime as dt
 import matplotlib.dates as mdates
 
+FIGURE_PATH = Path.home() / 'src' / 'mosaic_rain_on_snow' / 'figures'
 
 TAIR_ABOVE_ZERO = (dt.datetime(2020, 9, 13, 10, 0),
                    dt.datetime(2020, 9, 14, 9, 40))
