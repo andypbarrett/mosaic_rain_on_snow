@@ -15,6 +15,45 @@ XBEGIN = dt.datetime(2020, 9, 9, 0)  # x-axis minimum
 XEND = dt.datetime(2020, 9, 18, 0)   # x-axis maximum
 
 
+RADAR_COLORS = ['tab:red',
+                'tab:red',
+                'tab:blue',
+                'tab:blue',
+                'tab:green',
+                'tab:green']
+RADAR_LINESTYLES = ['-',
+                    '--',
+                    '-',
+                    '--',
+                    '-',
+                    '--']
+RADAR_SHADE = [True,
+               False,
+               True,
+               False,
+               True,
+               False]
+SBR_COLORS = ['tab:red',
+              'tab:red',
+              'tab:blue',
+              'tab:blue']
+SBR_LINESTYLES = ['-',
+                  '--',
+                  '-',
+                  '--']
+SBR_MARKERS = ['.',
+               '+',
+               '.',
+               '+']
+SBR_SHADE = [True,
+             False,
+             True,
+             False]
+
+PRE_EVENT = TAIR_ABOVE_ZERO[0]
+POST_EVENT = TAIR_ABOVE_ZERO[1]
+
+
 def add_fig_label(label, ax):
     ax.text(0.01, 0.98, label,
             transform=ax.transAxes,
