@@ -329,7 +329,7 @@ def plot_swe(snowdata, ax=None, fig_label=None,
     """
     if not ax: ax = plt.gca()
     ax = plotting.add_panel(ax, fig_label)
-    mscatter(snowdata, 'SWE (mm)',
+    mscatter(snowdata, 'SWE_SnowOnly_fromMicroCT',
              ax=ax,
              color=DEFAULT_SITE_MARKER_COLOR,
              size=DEFAULT_MARKER_SIZE,
