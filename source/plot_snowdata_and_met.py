@@ -154,7 +154,6 @@ def plot_snow_density(snowdata, ax=None, fig_label=None,
     """Create plot of snow density parameters.  Plots bulk density,
        desnity from micro-CT and SSA from micro-CT
     :snowdata: pandas.DataFrame containing snow data
-    
     :ax: matplotlib.Axes
     """
     if not ax: ax = plt.gca()
@@ -162,7 +161,7 @@ def plot_snow_density(snowdata, ax=None, fig_label=None,
     ax = mscatter(snowdata, 'Bulk snow density',   # Bulk density from cutter
                   ax=ax, color=density_colors[0],
                   size=DEFAULT_MARKER_SIZE)
-    ax = mscatter(snowdata, 'density',             # microCT density
+    ax = mscatter(snowdata, 'microCT_snowOnly_density',  # microCT density
                   ax=ax, color=density_colors[1],
                   size=DEFAULT_MARKER_SIZE)
     ax.set_ylim(120., 370)
