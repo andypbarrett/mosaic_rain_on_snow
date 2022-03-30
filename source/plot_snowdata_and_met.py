@@ -164,7 +164,7 @@ def plot_snow_density(snowdata, ax=None, fig_label=None,
     ax = mscatter(snowdata, 'microCT_snowOnly_density',  # microCT density
                   ax=ax, color=density_colors[1],
                   size=DEFAULT_MARKER_SIZE)
-    ax.set_ylim(120., 370)
+    ax.set_ylim(100., 370)
     ax.set_ylabel('Density ($kg m^{-3}$)')
 
     # Add second y-axis for SSA
