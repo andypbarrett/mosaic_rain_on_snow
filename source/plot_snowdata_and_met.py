@@ -159,10 +159,10 @@ def plot_snow_density(snowdata, ax=None, fig_label=None,
     """
     if not ax: ax = plt.gca()
     ax = plotting.add_panel(ax, fig_label)
-    ax = mscatter(snowdata, 'Bulk snow density',
+    ax = mscatter(snowdata, 'Bulk snow density',   # Bulk density from cutter
                   ax=ax, color=density_colors[0],
                   size=DEFAULT_MARKER_SIZE)
-    ax = mscatter(snowdata, 'density',
+    ax = mscatter(snowdata, 'density',             # microCT density
                   ax=ax, color=density_colors[1],
                   size=DEFAULT_MARKER_SIZE)
     ax.set_ylim(120., 370)
