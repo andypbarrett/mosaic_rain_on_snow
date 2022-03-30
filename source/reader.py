@@ -29,6 +29,7 @@ REPODATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
 SNOWSALINITY_PATH = REPODATA_PATH / "mosaic_ros_snow_updated.csv"
 SNOWDATA_PATH = REPODATA_PATH / "Snow_RoS.csv"
 MICROCT_DATA_PATH = REPODATA_PATH / "MOSAiC_ROSevent_12to15092020_PitsOnly_microCTmeans_updated.csv"
+SWEDATA_PATH = REPODATA_PATH / "MOSAiC_ROSevent_12to15092020_PitsOnly_SnowDepth_SWE_new_corrected.csv"
 KUKA_PATH = REPODATA_PATH / "KuKa_RoS_corrected_KuKaPy.csv"
 SBR_PATH = REPODATA_PATH
 PLUVIO_PATH = REPODATA_PATH / "pluvio_ds_2020-09-09 00:00:00_2020-09-20 00:00:00.nc"
@@ -66,7 +67,10 @@ def snowdata():
                            index_col="Timestamp")
     microctdata = pd.read_csv(MICROCT_DATA_PATH, parse_dates=True,
                               index_col="Timestamp")
+    swedata = pd.read_csv(SWEDATA_PATH, parse_dates=True,
+                          index_col="Timestamp")
     snowdata['microCT_snowOnly_density'] = microctdata["microCT_snowOnly_density"]
+    snowdata['SWE_SnowOnly_fromMicroCT'] = swedata["SWE_SnowOnly_fromMicroCT []"]
     return snowdata
 
 
