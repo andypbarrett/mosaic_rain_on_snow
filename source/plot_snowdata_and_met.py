@@ -351,7 +351,6 @@ def plot_swe(snowdata, ax=None, fig_label=None,
              ax=ax_sd,
              color=SNOW_DEPTH_MARKER_COLOR,
              size=DEFAULT_MARKER_SIZE,
-#             background=SNOW_DEPTH_MARKER_COLOR,
              )
     ax_sd.set_ylim(0., 100.)
     ax_sd.set_ylabel('Snow Depth (mm)')
@@ -359,10 +358,7 @@ def plot_swe(snowdata, ax=None, fig_label=None,
     if add_site_legend:
         ax.legend(handles=site_legend_handles(), loc="lower left")
 
-#    ax.tick_params(axis='y', colors=SWE_MARKER_COLOR)
     ax_sd.tick_params(axis='y', colors=SNOW_DEPTH_MARKER_COLOR)
-#    ax_ssa.spines['right'].set_color(SWE_MARKER_COLOR)
-#    ax_ssa.spines['left'].set_color(SALINITY_MARKER_COLOR)
 
     return ax
 
