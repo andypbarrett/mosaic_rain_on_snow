@@ -269,7 +269,7 @@ def plot_fall_speed(kazrdata, ax=None, fig_label=None):
 
     cb_kwargs = {"shrink": 0.9,
                  "orientation": "vertical",
-                 "pad": -0.08,
+                 "pad": 0.01,
                  "aspect": 15,
                  "label": "Fall speed ($m/s$)"}
 
