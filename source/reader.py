@@ -71,6 +71,8 @@ def snowdata():
                           index_col="Timestamp")
     snowdata['microCT_snowOnly_density'] = microctdata["microCT_snowOnly_density"]
     snowdata['SWE_SnowOnly_fromMicroCT'] = swedata["SWE_SnowOnly_fromMicroCT []"]
+    snowdata["mean_microCT_density"] = microctdata["mean_microCT_density"]
+    snowdata["microCT_SnowHeight"] = microctdata["microCT_SnowHeight [mm]"]
     return snowdata
 
 
