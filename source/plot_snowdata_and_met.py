@@ -21,12 +21,14 @@ site_name = [
 site_markers = ["o", "v", "P", "X", "D", "s"]
 
 density_labels = [
-    "Density cutter",
-    "micro-CT",
+    "Bulk; cutter",
+    "Snow; micro-CT",
+    "Bulk; micro-CT",
     "SSA"]
 density_colors = [
     "c",
     "m",
+    "g",
     "y",]
 
 DEFAULT_MARKER_SIZE = 50
@@ -164,6 +166,9 @@ def plot_snow_density(snowdata, ax=None, fig_label=None,
     ax = mscatter(snowdata, 'microCT_snowOnly_density',  # microCT density
                   ax=ax, color=density_colors[1],
                   size=DEFAULT_MARKER_SIZE)
+    ax = mscatter(snowdata, 'mean_microCT_density',  # bulk microCT density
+                  ax=ax, color=density_colors[2],
+                  size=DEFAULT_MARKER_SIZE)
     ax.set_ylim(100., 370)
     ax.set_ylabel('Density ($kg m^{-3}$)')
 
@@ -171,7 +176,7 @@ def plot_snow_density(snowdata, ax=None, fig_label=None,
     ax_ssa = ax.twinx()
     ax_ssa = mscatter(snowdata, 'SSA',
                       ax=ax_ssa,
-                      color=density_colors[2],
+                      color=density_colors[3],
                       size=DEFAULT_MARKER_SIZE)
     ax_ssa.set_ylim(0., 25.)
     ax_ssa.set_ylabel('Specific Surface Area ($m^2 kg^{-1}$)')
