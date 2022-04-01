@@ -39,6 +39,7 @@ DEFAULT_SITE_MARKER_COLOR = "0.2"
 
 SWE_MARKER_COLOR = "lightcoral"
 SALINITY_MARKER_COLOR = "cornflowerblue"
+SNOW_DEPTH_MARKER_COLOR = "cornflowerblue"
 TOTAL_PRECIP_LINE_COLOR = "m"
 DIAMETER_LINE_COLOR = "black"
 
@@ -344,11 +345,22 @@ def plot_swe(snowdata, ax=None, fig_label=None,
 
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
 
+    # Add second y-axis for snow depth
+    ax_sd = ax.twinx()
+    mscatter(snowdata, 'microCT_SnowHeight',
+             ax=ax_sd,
+             color=SNOW_DEPTH_MARKER_COLOR,
+             size=DEFAULT_MARKER_SIZE,
+#             background=SNOW_DEPTH_MARKER_COLOR,
+             )
+    ax_sd.set_ylim(0., 100.)
+    ax_sd.set_ylabel('Snow Depth (mm)')
+
     if add_site_legend:
         ax.legend(handles=site_legend_handles(), loc="lower left")
 
-#    ax.tick_params(axis='y', colors=SALINITY_MARKER_COLOR)
-#    ax_ssa.tick_params(axis='y', colors=SWE_MARKER_COLOR)
+#    ax.tick_params(axis='y', colors=SWE_MARKER_COLOR)
+    ax_sd.tick_params(axis='y', colors=SNOW_DEPTH_MARKER_COLOR)
 #    ax_ssa.spines['right'].set_color(SWE_MARKER_COLOR)
 #    ax_ssa.spines['left'].set_color(SALINITY_MARKER_COLOR)
 
