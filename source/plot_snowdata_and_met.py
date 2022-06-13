@@ -21,12 +21,14 @@ site_name = [
 site_markers = ["o", "v", "P", "X", "D", "s"]
 
 density_labels = [
-    "Density cutter",
-    "micro-CT",
+    "Bulk; cutter",
+    "Snow; micro-CT",
+    "Bulk; micro-CT",
     "SSA"]
 density_colors = [
     "c",
     "m",
+    "g",
     "y",]
 
 DEFAULT_MARKER_SIZE = 50
@@ -37,6 +39,7 @@ DEFAULT_SITE_MARKER_COLOR = "0.2"
 
 SWE_MARKER_COLOR = "lightcoral"
 SALINITY_MARKER_COLOR = "cornflowerblue"
+SNOW_DEPTH_MARKER_COLOR = "cornflowerblue"
 TOTAL_PRECIP_LINE_COLOR = "m"
 DIAMETER_LINE_COLOR = "black"
 
@@ -154,25 +157,27 @@ def plot_snow_density(snowdata, ax=None, fig_label=None,
     """Create plot of snow density parameters.  Plots bulk density,
        desnity from micro-CT and SSA from micro-CT
     :snowdata: pandas.DataFrame containing snow data
-    
     :ax: matplotlib.Axes
     """
     if not ax: ax = plt.gca()
     ax = plotting.add_panel(ax, fig_label)
-    ax = mscatter(snowdata, 'Bulk snow density',
+    ax = mscatter(snowdata, 'Bulk snow density',   # Bulk density from cutter
                   ax=ax, color=density_colors[0],
                   size=DEFAULT_MARKER_SIZE)
-    ax = mscatter(snowdata, 'density',
+    ax = mscatter(snowdata, 'microCT_snowOnly_density',  # microCT density
                   ax=ax, color=density_colors[1],
                   size=DEFAULT_MARKER_SIZE)
-    ax.set_ylim(120., 370)
+    ax = mscatter(snowdata, 'mean_microCT_density',  # bulk microCT density
+                  ax=ax, color=density_colors[2],
+                  size=DEFAULT_MARKER_SIZE)
+    ax.set_ylim(100., 370)
     ax.set_ylabel('Density ($kg m^{-3}$)')
 
     # Add second y-axis for SSA
     ax_ssa = ax.twinx()
     ax_ssa = mscatter(snowdata, 'SSA',
                       ax=ax_ssa,
-                      color=density_colors[2],
+                      color=density_colors[3],
                       size=DEFAULT_MARKER_SIZE)
     ax_ssa.set_ylim(0., 25.)
     ax_ssa.set_ylabel('Specific Surface Area ($m^2 kg^{-1}$)')
@@ -264,7 +269,7 @@ def plot_fall_speed(kazrdata, ax=None, fig_label=None):
 
     cb_kwargs = {"shrink": 0.9,
                  "orientation": "vertical",
-                 "pad": -0.08,
+                 "pad": 0.01,
                  "aspect": 15,
                  "label": "Fall speed ($m/s$)"}
 
@@ -330,7 +335,7 @@ def plot_swe(snowdata, ax=None, fig_label=None,
     """
     if not ax: ax = plt.gca()
     ax = plotting.add_panel(ax, fig_label)
-    mscatter(snowdata, 'SWE (mm)',
+    mscatter(snowdata, 'SWE_SnowOnly_fromMicroCT',
              ax=ax,
              color=DEFAULT_SITE_MARKER_COLOR,
              size=DEFAULT_MARKER_SIZE,
@@ -340,13 +345,20 @@ def plot_swe(snowdata, ax=None, fig_label=None,
 
     ax.axhline(0., c=DEFAULT_ZERO_LINE_COLOR)
 
+    # Add second y-axis for snow depth
+    ax_sd = ax.twinx()
+    mscatter(snowdata, 'microCT_SnowHeight',
+             ax=ax_sd,
+             color=SNOW_DEPTH_MARKER_COLOR,
+             size=DEFAULT_MARKER_SIZE,
+             )
+    ax_sd.set_ylim(0., 100.)
+    ax_sd.set_ylabel('Snow Depth (mm)')
+
     if add_site_legend:
         ax.legend(handles=site_legend_handles(), loc="lower left")
 
-#    ax.tick_params(axis='y', colors=SALINITY_MARKER_COLOR)
-#    ax_ssa.tick_params(axis='y', colors=SWE_MARKER_COLOR)
-#    ax_ssa.spines['right'].set_color(SWE_MARKER_COLOR)
-#    ax_ssa.spines['left'].set_color(SALINITY_MARKER_COLOR)
+    ax_sd.tick_params(axis='y', colors=SNOW_DEPTH_MARKER_COLOR)
 
     return ax
 

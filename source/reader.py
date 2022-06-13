@@ -28,7 +28,9 @@ metfile_path = [MET_DATAPATH / f for f in metfiles]
 REPODATA_PATH = ROOT_PATH / "src" / "mosaic_rain_on_snow" / "data"
 SNOWSALINITY_PATH = REPODATA_PATH / "mosaic_ros_snow_updated.csv"
 SNOWDATA_PATH = REPODATA_PATH / "Snow_RoS.csv"
-KUKA_PATH = REPODATA_PATH / "KuKa_RoS_corrected_KuKaPy.csv"
+MICROCT_DATA_PATH = REPODATA_PATH / "MOSAiC_ROSevent_12to15092020_PitsOnly_microCTmeans_updated.csv"
+SWEDATA_PATH = REPODATA_PATH / "MOSAiC_ROSevent_12to15092020_PitsOnly_SnowDepth_SWE_new_corrected.csv"
+KUKA_PATH = REPODATA_PATH / "KuKa_RoS_corrected_KuKaPy_v2.csv"
 SBR_PATH = REPODATA_PATH
 PLUVIO_PATH = REPODATA_PATH / "pluvio_ds_2020-09-09 00:00:00_2020-09-20 00:00:00.nc"
 KAZR_PATH = REPODATA_PATH / "kazr_ds_2020-09-09 00:00:00_2020-09-20 00:00:00.nc"
@@ -61,7 +63,17 @@ def metdata():
 
 def snowdata():
     """Returns pandas dataframe containing snowpit observations"""
-    return pd.read_csv(SNOWDATA_PATH, parse_dates=True, index_col="Timestamp")
+    snowdata = pd.read_csv(SNOWDATA_PATH, parse_dates=True,
+                           index_col="Timestamp")
+    microctdata = pd.read_csv(MICROCT_DATA_PATH, parse_dates=True,
+                              index_col="Timestamp")
+    swedata = pd.read_csv(SWEDATA_PATH, parse_dates=True,
+                          index_col="Timestamp")
+    snowdata['microCT_snowOnly_density'] = microctdata["microCT_snowOnly_density"]
+    snowdata['SWE_SnowOnly_fromMicroCT'] = swedata["SWE_SnowOnly_fromMicroCT []"]
+    snowdata["mean_microCT_density"] = microctdata["mean_microCT_density"]
+    snowdata["microCT_SnowHeight"] = microctdata["microCT_SnowHeight [mm]"]
+    return snowdata
 
 
 def snow_salinity():
