@@ -57,12 +57,12 @@ PRE_EVENT = TAIR_ABOVE_ZERO[0]
 POST_EVENT = TAIR_ABOVE_ZERO[1]
 
 
-def add_fig_label(label, ax):
+def add_fig_label(label, ax, fontsize=12):
     ax.text(0.01, 0.98, label,
             transform=ax.transAxes,
             verticalalignment="top",
             horizontalalignment="left",
-            fontsize=15,
+            fontsize=fontsize,
             bbox={"facecolor": "white", "edgecolor": "None", "alpha": 0.5})
 
 
