@@ -16,14 +16,18 @@ from plotting import (PRE_EVENT,
                       FIGURE_PATH)
 
 
+KUKA_YLIM = (-35, 15)
+KUKA_INT = 5
+KUKA_TICKS = range(KUKA_YLIM[0], KUKA_YLIM[1]+KUKA_INT, KUKA_INT)
+
 def plot_ku(df, ax=None, fig_label=None):
     """Plots Ku radar channels"""
     if not ax: plt.gca()
     plotting.add_panel(ax=ax, fig_label=fig_label)
     df.plot(ax=ax, color=RADAR_COLORS, style=RADAR_LINESTYLES)
-    ax.set_ylim(-35, 5)
+    ax.set_ylim(KUKA_YLIM)
     ax.set_ylabel("Backscatter (dB)")
-    ax.set_yticks(range(-35, 15, 5))
+    ax.set_yticks(KUKA_TICKS)
     ax.legend(loc="lower left", ncol=2)
     return ax
 
@@ -33,9 +37,9 @@ def plot_ka(df, ax=None, fig_label=None):
     if not ax: plt.gca()
     plotting.add_panel(ax=ax, fig_label=fig_label)
     df.plot(ax=ax, color=RADAR_COLORS, style=RADAR_LINESTYLES)
-    ax.set_ylim(-35, 5)
+    ax.set_ylim(KUKA_YLIM)
     ax.set_ylabel("Backscatter (dB)")
-    ax.set_yticks(range(-35, 15, 5))
+    ax.set_yticks(KUKA_TICKS)
     ax.legend(loc="lower left", ncol=2)
     return ax
 
