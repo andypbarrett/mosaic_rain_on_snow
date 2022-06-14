@@ -38,6 +38,10 @@ def plot_mosaic_microwave_closeup():
 
     datefmt = mdates.DateFormatter('%d\n%H:%M')
     
+    # Set legend fontsize
+    plt.rc('legend', fontsize=8)
+    plt.rc('legend', columnspacing=1.)
+    
     fig = plt.figure(figsize=(7, 9), constrained_layout=False)
     gs = GridSpec(3, 6, figure=fig)
 
